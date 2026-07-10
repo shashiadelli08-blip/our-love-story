@@ -1,24 +1,46 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useRef } from "react";
+import { MusicPlayer } from "@/components/story/MusicPlayer";
+import { SceneOpening } from "@/components/story/SceneOpening";
+import { SceneHands } from "@/components/story/SceneHands";
+import { SceneMap } from "@/components/story/SceneMap";
+import { SceneLetter } from "@/components/story/SceneLetter";
+import { SceneMemories } from "@/components/story/SceneMemories";
+import { SceneVideo } from "@/components/story/SceneVideo";
+import { SceneWishes } from "@/components/story/SceneWishes";
+import { SceneFinale } from "@/components/story/SceneFinale";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
+  const handsRef = useRef<HTMLDivElement>(null);
+  const mapRef = useRef<HTMLDivElement>(null);
+
+  const scrollTo = (el: HTMLElement | null) => {
+    el?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <main className="relative w-full overflow-x-hidden">
+      <MusicPlayer />
+
+      <SceneOpening onBegin={() => scrollTo(handsRef.current)} />
+
+      <div ref={handsRef}>
+        <SceneHands onNext={() => scrollTo(mapRef.current)} />
+      </div>
+
+      <div ref={mapRef}>
+        <SceneMap />
+      </div>
+
+      <SceneLetter />
+      <SceneMemories />
+      <SceneVideo />
+      <SceneWishes />
+      <SceneFinale />
+    </main>
   );
 }
