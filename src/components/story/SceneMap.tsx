@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Particles } from "./Particles";
-import { HeartBurst } from "./Characters";
 import journeyMap from "@/assets/journey-map.png.asset.json";
 import duduImg from "@/assets/dudu.png.asset.json";
 import babuImg from "@/assets/babu.png.asset.json";
@@ -93,6 +92,7 @@ export function SceneMap() {
   const [active, setActive] = useState<Stop | null>(null);
   const [envOpen, setEnvOpen] = useState(false);
   const [typed, setTyped] = useState("");
+  const [popped, setPopped] = useState<Record<string, boolean>>({});
 
   // Reset the envelope + typewriter each time a new stop opens
   useEffect(() => {
@@ -117,12 +117,6 @@ export function SceneMap() {
     return () => clearInterval(id);
   }, [active, envOpen]);
 
-  // Loop the walk: visit each stop, then return to the first.
-  const walkStops = [...STOPS, STOPS[0]];
-  const walkX = walkStops.map((s) => `${s.x}%`);
-  const walkY = walkStops.map((s) => `${s.y}%`);
-  const totalDuration = STOPS.length * 3.2;
-
   return (
     <section className="relative min-h-screen overflow-hidden py-24">
       <div
@@ -144,7 +138,7 @@ export function SceneMap() {
           Our Relationship Journey
         </motion.h2>
         <p className="mt-3 text-center font-hand text-2xl text-rose-700">
-          Follow Dudu &amp; Babu as they wander through every place — tap a pin to unfold its memory.
+          Pop a balloon at each place to unfold the little memory hidden inside. 🎈
         </p>
 
         <div className="relative mt-10 aspect-[3/2] w-full overflow-hidden rounded-[2rem] shadow-[0_20px_60px_rgba(190,80,110,0.25)] ring-1 ring-rose-200/60">
@@ -155,67 +149,71 @@ export function SceneMap() {
             draggable={false}
           />
 
-          {/* Invisible clickable hotspots over each photo on the map */}
-          {STOPS.map((s, idx) => (
-            <button
-              key={s.id}
-              onClick={() => setActive(s)}
-              aria-label={`Open memory: ${s.name}`}
-              className="group absolute h-[18%] w-[22%] -translate-x-1/2 -translate-y-1/2 rounded-2xl transition hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
-              style={{ left: `${s.x}%`, top: `${s.y}%` }}
-            >
-              <span className="absolute -top-2 -left-2 flex h-7 w-7 items-center justify-center rounded-full bg-rose-500 text-xs font-bold text-white shadow-lg opacity-0 transition group-hover:opacity-100">
-                {idx + 1}
-              </span>
-              <span className="absolute inset-0 rounded-2xl ring-2 ring-rose-400/0 transition group-hover:ring-rose-400/70" />
-            </button>
-          ))}
-
-          {/* Walking Dudu + Babu — travel through every stop in a gentle loop */}
-          <motion.div
-            className="pointer-events-none absolute z-10 flex items-end gap-1"
-            initial={{ left: `${STOPS[0].x}%`, top: `${STOPS[0].y}%` }}
-            animate={{ left: walkX, top: walkY }}
-            transition={{
-              duration: totalDuration,
-              ease: "easeInOut",
-              times: walkStops.map((_, i) => i / (walkStops.length - 1)),
-              repeat: Infinity,
-              repeatType: "loop",
-            }}
-            style={{ translateX: "-50%", translateY: "-90%" }}
-          >
-            <motion.div
-              animate={{ y: [0, -4, 0] }}
-              transition={{ duration: 0.7, repeat: Infinity, ease: "easeInOut" }}
-              className="relative"
-            >
-              <img
-                src={duduImg.url}
-                alt="Dudu the bunny"
-                className="h-16 w-16 object-contain drop-shadow-[0_6px_10px_rgba(190,80,110,0.4)] md:h-24 md:w-24"
-                draggable={false}
-              />
-            </motion.div>
-            <HeartBurst className="mb-6 h-5 w-5 animate-floaty" />
-            <motion.div
-              animate={{ y: [0, -4, 0] }}
-              transition={{
-                duration: 0.7,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 0.15,
-              }}
-              className="relative"
-            >
-              <img
-                src={babuImg.url}
-                alt="Babu the bear"
-                className="h-16 w-16 object-contain drop-shadow-[0_6px_10px_rgba(190,80,110,0.4)] md:h-24 md:w-24"
-                draggable={false}
-              />
-            </motion.div>
-          </motion.div>
+          {/* A floating balloon at every place — tap to pop and read the memory */}
+          {STOPS.map((s, idx) => {
+            const colors = [
+              "from-rose-400 to-rose-600",
+              "from-pink-400 to-pink-600",
+              "from-fuchsia-400 to-fuchsia-600",
+              "from-red-400 to-rose-500",
+              "from-rose-300 to-pink-500",
+              "from-pink-500 to-rose-600",
+              "from-fuchsia-300 to-rose-500",
+            ];
+            const isPopped = popped[s.id];
+            return (
+              <button
+                key={s.id}
+                onClick={() => {
+                  setPopped((p) => ({ ...p, [s.id]: true }));
+                  setTimeout(() => setActive(s), 380);
+                }}
+                aria-label={`Pop the balloon at ${s.name}`}
+                className="group absolute z-10 -translate-x-1/2 -translate-y-full focus:outline-none"
+                style={{ left: `${s.x}%`, top: `${s.y}%` }}
+              >
+                {/* String */}
+                <span className="mx-auto block h-10 w-[2px] bg-rose-300/80" />
+                {/* Balloon */}
+                <motion.span
+                  className="relative -mt-[46px] block"
+                  animate={
+                    isPopped
+                      ? { scale: [1, 1.4, 0], opacity: [1, 1, 0], rotate: [0, -8, 0] }
+                      : { y: [0, -6, 0], rotate: [-2, 2, -2] }
+                  }
+                  transition={
+                    isPopped
+                      ? { duration: 0.35 }
+                      : { duration: 3 + idx * 0.2, repeat: Infinity, ease: "easeInOut" }
+                  }
+                >
+                  <span
+                    className={`relative flex h-10 w-9 items-center justify-center rounded-[50%] bg-gradient-to-br ${colors[idx % colors.length]} text-white shadow-[0_6px_14px_rgba(190,80,110,0.45)] ring-1 ring-white/40 transition group-hover:scale-110 md:h-14 md:w-12`}
+                  >
+                    <span className="text-[10px] font-bold md:text-xs">{idx + 1}</span>
+                    <span className="absolute left-1.5 top-1.5 h-2 w-2 rounded-full bg-white/70 md:h-3 md:w-3" />
+                    <span className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-inherit" />
+                  </span>
+                  {/* Little "pop me" nudge */}
+                  <span className="pointer-events-none absolute -top-6 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-white/90 px-2 py-0.5 text-[9px] font-medium text-rose-600 opacity-0 shadow transition group-hover:opacity-100 md:text-[10px]">
+                    pop me ✨
+                  </span>
+                </motion.span>
+                {/* Pop burst */}
+                {isPopped && (
+                  <motion.span
+                    className="pointer-events-none absolute left-1/2 top-0 -translate-x-1/2 text-2xl"
+                    initial={{ scale: 0, opacity: 1 }}
+                    animate={{ scale: 2, opacity: 0 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    💥
+                  </motion.span>
+                )}
+              </button>
+            );
+          })}
         </div>
 
         <p className="mx-auto mt-8 max-w-xl text-center font-hand text-xl text-rose-800/80">
