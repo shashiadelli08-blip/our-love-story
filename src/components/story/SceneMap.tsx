@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { Particles } from "./Particles";
+import { Dudu, Babu, HeartBurst } from "./Characters";
+import journeyMap from "@/assets/journey-map.png.asset.json";
 
 type Stop = {
   id: string;
@@ -16,8 +18,8 @@ const STOPS: Stop[] = [
   {
     id: "kims",
     name: "KIMS Degree & PG College",
-    x: 12,
-    y: 30,
+    x: 15,
+    y: 22,
     title: "First Meet · First Memory · First Chapter",
     memory:
       "The place where our story stepped into reality. The place where strangers became familiar. The place where I first saw you and never knew how important you'd become.\n\n✨ First Meet.\n✨ First Memory.\n✨ First Chapter.",
@@ -26,7 +28,7 @@ const STOPS: Stop[] = [
   {
     id: "gb",
     name: "Geetha Bhavan",
-    x: 38,
+    x: 42,
     y: 22,
     title: "Just tea. Just you.",
     memory:
@@ -36,8 +38,8 @@ const STOPS: Stop[] = [
   {
     id: "kb",
     name: "Kulture Bakery",
-    x: 22,
-    y: 58,
+    x: 18,
+    y: 57,
     title: "More than friends",
     memory:
       "A bakery filled with snacks. A heart filled with questions. The conversations became easier. The smiles became warmer. And somewhere between those little moments… you started becoming my more than friend.",
@@ -46,7 +48,7 @@ const STOPS: Stop[] = [
   {
     id: "bb",
     name: "Bimbo Bakeries — Internship Days",
-    x: 50,
+    x: 45,
     y: 55,
     title: "Where two souls became one",
     memory:
@@ -56,8 +58,8 @@ const STOPS: Stop[] = [
   {
     id: "dw",
     name: "Dawath Arabian Restaurant",
-    x: 76,
-    y: 48,
+    x: 74,
+    y: 59,
     title: "Spicing up our bond",
     memory:
       "After a long wait… two hearts finally met again. Good food. Long conversations. Endless smiles. A heart full of all the moments we missed. One more stop on our journey. One more memory added to my heart. 🍽️❤️",
@@ -66,8 +68,8 @@ const STOPS: Stop[] = [
   {
     id: "mm",
     name: "Melody Mings",
-    x: 32,
-    y: 82,
+    x: 22,
+    y: 85,
     title: "Movies, laughter & us",
     memory:
       "This stop felt different. Because by then… it wasn't just about spending time together. It wasn't just about conversations. Somewhere along the way… my heart had already chosen you. And little by little… I became completely yours. 🌙❤️",
@@ -76,8 +78,8 @@ const STOPS: Stop[] = [
   {
     id: "tl",
     name: "Tealogy, KPHB",
-    x: 62,
-    y: 82,
+    x: 48,
+    y: 87,
     title: "But our forever starts",
     memory:
       "A table. Two people. Countless feelings. Conversations that carried things words could never fully explain. More laughter. More memories. And another beautiful pin added to our map. A place that will forever remind me of us. 🍵❤️",
@@ -87,7 +89,12 @@ const STOPS: Stop[] = [
 
 export function SceneMap() {
   const [active, setActive] = useState<Stop | null>(null);
-  const path = STOPS.map((s, i) => `${i === 0 ? "M" : "L"} ${s.x} ${s.y}`).join(" ");
+
+  // Loop the walk: visit each stop, then return to the first.
+  const walkStops = [...STOPS, STOPS[0]];
+  const walkX = walkStops.map((s) => `${s.x}%`);
+  const walkY = walkStops.map((s) => `${s.y}%`);
+  const totalDuration = STOPS.length * 3.2;
 
   return (
     <section className="relative min-h-screen overflow-hidden py-24">
@@ -110,85 +117,68 @@ export function SceneMap() {
           Our Relationship Journey
         </motion.h2>
         <p className="mt-3 text-center font-hand text-2xl text-rose-700">
-          Built on love, growing together — tap each pin to unfold a memory.
+          Follow Dudu &amp; Babu as they wander through every place — tap a pin to unfold its memory.
         </p>
 
-        <div className="relative mt-12 aspect-[16/9] w-full overflow-hidden rounded-[2.5rem] glass-card">
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(180deg, #ffe4ea 0%, #fbc9d5 60%, #f6b0c1 100%)",
-            }}
+        <div className="relative mt-10 aspect-[3/2] w-full overflow-hidden rounded-[2rem] shadow-[0_20px_60px_rgba(190,80,110,0.25)] ring-1 ring-rose-200/60">
+          <img
+            src={journeyMap.url}
+            alt="Our relationship journey map with all our favorite places"
+            className="absolute inset-0 h-full w-full object-cover"
+            draggable={false}
           />
-          {/* soft blossom clouds */}
-          <div className="absolute -left-6 -top-6 h-40 w-56 rounded-full bg-rose-200/60 blur-2xl" />
-          <div className="absolute -right-8 top-8 h-36 w-52 rounded-full bg-pink-200/70 blur-2xl" />
-          <div className="absolute bottom-0 left-1/4 h-32 w-64 rounded-full bg-rose-100/70 blur-2xl" />
-          <div className="absolute bottom-4 right-8 h-28 w-40 rounded-full bg-pink-100/70 blur-2xl" />
-          {/* scattered hearts */}
-          {Array.from({ length: 14 }).map((_, i) => (
-            <span
-              key={i}
-              className="absolute text-rose-300/70"
-              style={{
-                left: `${(i * 73) % 95 + 2}%`,
-                top: `${(i * 41) % 90 + 5}%`,
-                fontSize: `${10 + (i % 4) * 4}px`,
-              }}
-            >
-              ♡
-            </span>
-          ))}
 
-          <svg
-            viewBox="0 0 100 100"
-            preserveAspectRatio="none"
-            className="absolute inset-0 h-full w-full"
-          >
-            <motion.path
-              d={path}
-              fill="none"
-              stroke="#e05a76"
-              strokeWidth={0.7}
-              strokeDasharray="1.6 1.6"
-              strokeLinecap="round"
-              initial={{ pathLength: 0 }}
-              whileInView={{ pathLength: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 4.5, ease: "easeInOut" }}
-            />
-          </svg>
-
+          {/* Invisible clickable hotspots over each photo on the map */}
           {STOPS.map((s, idx) => (
-            <motion.button
+            <button
               key={s.id}
               onClick={() => setActive(s)}
-              initial={{ scale: 0, opacity: 0 }}
-              whileInView={{ scale: 1, opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 + idx * 0.18, type: "spring" }}
-              className="group absolute -translate-x-1/2 -translate-y-1/2"
+              aria-label={`Open memory: ${s.name}`}
+              className="group absolute h-[18%] w-[22%] -translate-x-1/2 -translate-y-1/2 rounded-2xl transition hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
               style={{ left: `${s.x}%`, top: `${s.y}%` }}
             >
-              <span className="relative flex flex-col items-center">
-                {/* label card */}
-                <span className="mb-1 flex max-w-[180px] items-center gap-1.5 rounded-xl bg-[#fff2e6] px-2.5 py-1 shadow-[0_3px_10px_rgba(190,80,90,0.25)] ring-1 ring-rose-200 transition group-hover:-translate-y-0.5">
-                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-rose-500 text-[10px] font-bold text-white">
-                    {idx + 1}
-                  </span>
-                  <span className="whitespace-nowrap text-[11px] font-semibold text-rose-900">
-                    {s.name}
-                  </span>
-                </span>
-                {/* pin */}
-                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-base shadow-[0_6px_18px_rgba(200,90,90,0.4)] ring-2 ring-rose-400 transition group-hover:scale-110">
-                  {s.emoji}
-                </span>
-                <span className="mt-0.5 text-rose-500">📍</span>
+              <span className="absolute -top-2 -left-2 flex h-7 w-7 items-center justify-center rounded-full bg-rose-500 text-xs font-bold text-white shadow-lg opacity-0 transition group-hover:opacity-100">
+                {idx + 1}
               </span>
-            </motion.button>
+              <span className="absolute inset-0 rounded-2xl ring-2 ring-rose-400/0 transition group-hover:ring-rose-400/70" />
+            </button>
           ))}
+
+          {/* Walking Dudu + Babu — travel through every stop in a gentle loop */}
+          <motion.div
+            className="pointer-events-none absolute z-10 flex items-end gap-1"
+            initial={{ left: `${STOPS[0].x}%`, top: `${STOPS[0].y}%` }}
+            animate={{ left: walkX, top: walkY }}
+            transition={{
+              duration: totalDuration,
+              ease: "easeInOut",
+              times: walkStops.map((_, i) => i / (walkStops.length - 1)),
+              repeat: Infinity,
+              repeatType: "loop",
+            }}
+            style={{ translateX: "-50%", translateY: "-90%" }}
+          >
+            <motion.div
+              animate={{ y: [0, -4, 0] }}
+              transition={{ duration: 0.7, repeat: Infinity, ease: "easeInOut" }}
+              className="relative"
+            >
+              <Dudu className="h-16 w-14 drop-shadow-[0_6px_10px_rgba(190,80,110,0.4)] md:h-20 md:w-16" />
+            </motion.div>
+            <HeartBurst className="mb-6 h-5 w-5 animate-floaty" />
+            <motion.div
+              animate={{ y: [0, -4, 0] }}
+              transition={{
+                duration: 0.7,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 0.15,
+              }}
+              className="relative"
+            >
+              <Babu className="h-16 w-14 -scale-x-100 drop-shadow-[0_6px_10px_rgba(190,80,110,0.4)] md:h-20 md:w-16" />
+            </motion.div>
+          </motion.div>
         </div>
 
         <p className="mx-auto mt-8 max-w-xl text-center font-hand text-xl text-rose-800/80">
