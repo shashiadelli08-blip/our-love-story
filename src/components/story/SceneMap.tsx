@@ -235,16 +235,92 @@ export function SceneMap() {
             initial={{ scale: 0.85, y: 30 }}
             animate={{ scale: 1, y: 0 }}
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-lg overflow-hidden rounded-3xl glass-card p-8 text-center"
+            className="relative w-full max-w-xl overflow-hidden rounded-3xl glass-card p-8 text-center"
           >
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-rose text-3xl">
-              {active.emoji}
+            {/* Babu opens the envelope, Dudu reads it slowly */}
+            <div className="relative mx-auto mb-4 flex h-40 items-end justify-center gap-6">
+              {/* Babu — opens the letter */}
+              <motion.img
+                src={babuImg.url}
+                alt="Babu opens the letter"
+                className="h-28 w-28 object-contain drop-shadow-[0_6px_10px_rgba(190,80,110,0.35)]"
+                initial={{ x: -20, y: 10, opacity: 0 }}
+                animate={{ x: 0, y: envOpen ? -6 : 0, opacity: 1, rotate: envOpen ? [-4, 4, -2, 0] : 0 }}
+                transition={{ duration: 0.8 }}
+                draggable={false}
+              />
+
+              {/* Envelope / Letter */}
+              <div className="relative h-24 w-32">
+                {/* Envelope base */}
+                <motion.div
+                  className="absolute inset-0 rounded-md bg-gradient-to-b from-rose-100 to-rose-200 shadow-inner ring-1 ring-rose-300"
+                  animate={{ scale: envOpen ? 1.05 : 1 }}
+                />
+                {/* Envelope flap */}
+                <motion.div
+                  className="absolute left-0 right-0 top-0 h-14 origin-top rounded-t-md bg-rose-300"
+                  style={{
+                    clipPath: "polygon(0 0, 100% 0, 50% 100%)",
+                    transformOrigin: "top center",
+                  }}
+                  animate={{ rotateX: envOpen ? 180 : 0 }}
+                  transition={{ duration: 0.8, ease: "easeInOut" }}
+                />
+                {/* Letter peeking */}
+                <motion.div
+                  className="absolute left-2 right-2 top-2 rounded-sm bg-white/95 px-2 py-1 text-[8px] leading-tight text-rose-900 shadow"
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: envOpen ? -18 : 20, opacity: envOpen ? 1 : 0 }}
+                  transition={{ delay: 0.5, duration: 0.6 }}
+                >
+                  <div className="font-hand text-[10px]">Dear Nanna…</div>
+                  <div className="mt-1 space-y-[2px]">
+                    <div className="h-[2px] w-full bg-rose-200" />
+                    <div className="h-[2px] w-4/5 bg-rose-200" />
+                    <div className="h-[2px] w-3/4 bg-rose-200" />
+                  </div>
+                </motion.div>
+                {/* Heart seal */}
+                {!envOpen && (
+                  <div className="absolute left-1/2 top-6 -translate-x-1/2 text-lg">❤️</div>
+                )}
+              </div>
+
+              {/* Dudu — reads the letter */}
+              <motion.img
+                src={duduImg.url}
+                alt="Dudu reads the letter"
+                className="h-28 w-28 object-contain drop-shadow-[0_6px_10px_rgba(190,80,110,0.35)]"
+                initial={{ x: 20, y: 10, opacity: 0 }}
+                animate={{
+                  x: 0,
+                  y: envOpen ? [0, -3, 0] : 0,
+                  opacity: 1,
+                }}
+                transition={{
+                  duration: envOpen ? 2 : 0.8,
+                  repeat: envOpen ? Infinity : 0,
+                  ease: "easeInOut",
+                }}
+                draggable={false}
+              />
             </div>
-            <p className="font-hand text-xl text-rose-700">{active.name}</p>
-            <h3 className="mt-1 font-display text-3xl text-rose-900">{active.title}</h3>
-            <p className="mt-4 whitespace-pre-line text-base leading-relaxed text-rose-950/80">
-              {active.memory}
+
+            <p className="font-hand text-xl text-rose-700">
+              <span className="mr-2">{active.emoji}</span>
+              {active.name}
             </p>
+            <h3 className="mt-1 font-display text-3xl text-rose-900">{active.title}</h3>
+
+            {/* Slow reveal — Dudu reading */}
+            <p className="mt-4 min-h-[6rem] whitespace-pre-line text-left text-base leading-relaxed text-rose-950/80">
+              {envOpen ? typed : ""}
+              {envOpen && typed.length < active.memory.length && (
+                <span className="ml-0.5 inline-block h-4 w-[2px] animate-pulse bg-rose-400 align-middle" />
+              )}
+            </p>
+
             <button
               onClick={() => setActive(null)}
               className="mt-6 rounded-full bg-rose-500 px-6 py-2 text-sm font-medium text-white shadow hover:bg-rose-600"
