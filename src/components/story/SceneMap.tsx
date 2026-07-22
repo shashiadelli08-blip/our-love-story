@@ -1,8 +1,10 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Particles } from "./Particles";
-import { Dudu, Babu, HeartBurst } from "./Characters";
+import { HeartBurst } from "./Characters";
 import journeyMap from "@/assets/journey-map.png.asset.json";
+import duduImg from "@/assets/dudu.png.asset.json";
+import babuImg from "@/assets/babu.png.asset.json";
 
 type Stop = {
   id: string;
