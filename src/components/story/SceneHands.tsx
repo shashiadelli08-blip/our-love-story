@@ -1,18 +1,6 @@
 import { motion } from "framer-motion";
-import { HeartBurst } from "./Characters";
+import { Babu, Dudu, HeartBurst } from "./Characters";
 import { Particles } from "./Particles";
-import duduAsset from "@/assets/dudu.png.asset.json";
-import babuAsset from "@/assets/babu.png.asset.json";
-
-const LINES = [
-  "The screen is quiet.",
-  "On one side stands Dudu.",
-  "On the other side stands Babu.",
-  "For a moment… they simply look at each other.",
-  "Then Dudu slowly reaches out her hand.",
-  "Babu smiles and reaches back.",
-  "Their hands meet.",
-];
 
 export function SceneHands({ onNext }: { onNext: () => void }) {
   return (
@@ -25,82 +13,53 @@ export function SceneHands({ onNext }: { onNext: () => void }) {
         }}
       />
       <Particles count={18} kinds={["heart", "petal", "sparkle"]} tint="text-rose-400" />
-
-      <div className="relative z-10 flex w-full max-w-5xl items-end justify-center gap-4 px-6 md:gap-8">
+      <div className="relative z-10 flex w-full max-w-5xl items-end justify-center gap-2 px-6 md:gap-0">
         <motion.div
-          initial={{ x: -180, opacity: 0 }}
+          initial={{ x: -120, opacity: 0 }}
           whileInView={{ x: 0, opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 1.6, ease: "easeOut" }}
-          className="flex w-40 flex-col items-center md:w-64"
+          transition={{ duration: 1.4, ease: "easeOut" }}
+          className="w-40 md:w-64"
         >
-          <motion.img
-            src={duduAsset.url}
-            alt="Dudu"
-            className="w-full drop-shadow-xl"
-            animate={{ y: [0, -6, 0] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <p className="mt-2 font-hand text-2xl text-rose-700">Dudu</p>
+          <Dudu className="drop-shadow-xl" />
         </motion.div>
 
         <motion.div
           initial={{ scale: 0, opacity: 0 }}
           whileInView={{ scale: 1, opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ delay: 2.2, duration: 0.9, type: "spring" }}
-          className="mb-28 flex flex-col items-center"
+          transition={{ delay: 1.5, duration: 0.8, type: "spring" }}
+          className="mb-24 flex flex-col items-center"
         >
           <HeartBurst className="h-14 w-14 animate-floaty" />
         </motion.div>
 
         <motion.div
-          initial={{ x: 180, opacity: 0 }}
+          initial={{ x: 120, opacity: 0 }}
           whileInView={{ x: 0, opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 1.6, ease: "easeOut" }}
-          className="flex w-40 flex-col items-center md:w-64"
+          transition={{ duration: 1.4, ease: "easeOut" }}
+          className="w-40 md:w-64"
         >
-          <motion.img
-            src={babuAsset.url}
-            alt="Babu"
-            className="w-full drop-shadow-xl"
-            animate={{ y: [0, -6, 0] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-          />
-          <p className="mt-2 font-hand text-2xl text-rose-700">Babu</p>
+          <Babu className="drop-shadow-xl -scale-x-100" />
         </motion.div>
       </div>
 
-      <div className="relative z-10 mt-10 flex flex-col items-center gap-2 px-6 text-center">
-        {LINES.map((line, i) => (
-          <motion.p
-            key={i}
-            initial={{ opacity: 0, y: 8 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.4 + i * 0.35, duration: 0.9 }}
-            className="font-hand text-2xl md:text-3xl text-rose-700"
-          >
-            {line}
-          </motion.p>
-        ))}
-        <motion.p
-          initial={{ opacity: 0, scale: 0.5 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.4 + LINES.length * 0.35, duration: 0.8, type: "spring" }}
-          className="mt-2 text-4xl"
-        >
-          ❤️
-        </motion.p>
-      </div>
+      <motion.p
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ delay: 2, duration: 1.2 }}
+        className="relative z-10 mt-10 font-hand text-3xl md:text-4xl text-rose-700"
+      >
+        Two hearts, one path.
+      </motion.p>
 
       <motion.button
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ delay: 3.4, duration: 0.8 }}
+        transition={{ delay: 2.6, duration: 0.8 }}
         onClick={onNext}
         whileHover={{ scale: 1.05 }}
         className="relative z-10 mt-8 rounded-full bg-white/70 px-8 py-3 font-medium text-rose-700 shadow-md ring-1 ring-rose-200 backdrop-blur"
