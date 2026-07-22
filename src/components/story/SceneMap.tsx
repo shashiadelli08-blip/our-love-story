@@ -165,7 +165,12 @@ export function SceneMap() {
               transition={{ duration: 0.7, repeat: Infinity, ease: "easeInOut" }}
               className="relative"
             >
-              <Dudu className="h-16 w-14 drop-shadow-[0_6px_10px_rgba(190,80,110,0.4)] md:h-20 md:w-16" />
+              <img
+                src={duduImg.url}
+                alt="Dudu the bunny"
+                className="h-16 w-16 object-contain drop-shadow-[0_6px_10px_rgba(190,80,110,0.4)] md:h-24 md:w-24"
+                draggable={false}
+              />
             </motion.div>
             <HeartBurst className="mb-6 h-5 w-5 animate-floaty" />
             <motion.div
@@ -178,7 +183,12 @@ export function SceneMap() {
               }}
               className="relative"
             >
-              <Babu className="h-16 w-14 -scale-x-100 drop-shadow-[0_6px_10px_rgba(190,80,110,0.4)] md:h-20 md:w-16" />
+              <img
+                src={babuImg.url}
+                alt="Babu the bear"
+                className="h-16 w-16 object-contain drop-shadow-[0_6px_10px_rgba(190,80,110,0.4)] md:h-24 md:w-24"
+                draggable={false}
+              />
             </motion.div>
           </motion.div>
         </div>
