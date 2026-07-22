@@ -103,6 +103,13 @@ export function SceneMap() {
     return () => clearTimeout(openTimer);
   }, [active]);
 
+  // When the memory modal closes, re-inflate that balloon so it can be popped again
+  useEffect(() => {
+    if (active) return;
+    const t = setTimeout(() => setPopped({}), 400);
+    return () => clearTimeout(t);
+  }, [active]);
+
   // Typewriter effect once the envelope is open — Dudu reading slowly
   useEffect(() => {
     if (!active || !envOpen) return;
