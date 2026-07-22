@@ -1,6 +1,7 @@
 import { motion, useAnimation } from "framer-motion";
 import { useEffect, useState } from "react";
 import { StarField, Particles } from "./Particles";
+import heroVideo from "@/assets/hero-opening.mp4.asset.json";
 
 const LINE_1 = "❤️ NANNA ❤️";
 const LINE_2 = "Happy Birthday, My Love";
@@ -38,13 +39,28 @@ export function SceneOpening({ onBegin }: { onBegin: () => void }) {
 
   return (
     <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-night text-white">
+      <video
+        src={heroVideo.url}
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 h-full w-full object-cover opacity-80"
+      />
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse at center, transparent 30%, oklch(0.14 0.04 275 / 0.55) 75%, oklch(0.14 0.04 275 / 0.85) 100%)",
+        }}
+      />
       <StarField count={120} />
       <Particles count={20} kinds={["heart", "sparkle"]} tint="text-rose-200" />
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 2 }}
-        className="absolute right-[10%] top-[12%] h-40 w-40 rounded-full animate-shimmer"
+        className="absolute right-[10%] top-[12%] h-40 w-40 rounded-full animate-shimmer opacity-60"
         style={{
           background:
             "radial-gradient(circle at 35% 35%, #fff8e0 0%, #f7d68a 55%, #b98a4a 100%)",
