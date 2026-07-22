@@ -91,6 +91,31 @@ const STOPS: Stop[] = [
 
 export function SceneMap() {
   const [active, setActive] = useState<Stop | null>(null);
+  const [envOpen, setEnvOpen] = useState(false);
+  const [typed, setTyped] = useState("");
+
+  // Reset the envelope + typewriter each time a new stop opens
+  useEffect(() => {
+    setEnvOpen(false);
+    setTyped("");
+    if (!active) return;
+    const openTimer = setTimeout(() => setEnvOpen(true), 900);
+    return () => clearTimeout(openTimer);
+  }, [active]);
+
+  // Typewriter effect once the envelope is open — Dudu reading slowly
+  useEffect(() => {
+    if (!active || !envOpen) return;
+    const text = active.memory;
+    let i = 0;
+    setTyped("");
+    const id = setInterval(() => {
+      i += 1;
+      setTyped(text.slice(0, i));
+      if (i >= text.length) clearInterval(id);
+    }, 32);
+    return () => clearInterval(id);
+  }, [active, envOpen]);
 
   // Loop the walk: visit each stop, then return to the first.
   const walkStops = [...STOPS, STOPS[0]];
