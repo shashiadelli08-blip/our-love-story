@@ -92,7 +92,6 @@ export function SceneMap() {
   const [active, setActive] = useState<Stop | null>(null);
   const [envOpen, setEnvOpen] = useState(false);
   const [typed, setTyped] = useState("");
-  const [popped, setPopped] = useState<Record<string, boolean>>({});
 
   // Reset the envelope + typewriter each time a new stop opens
   useEffect(() => {
@@ -101,13 +100,6 @@ export function SceneMap() {
     if (!active) return;
     const openTimer = setTimeout(() => setEnvOpen(true), 900);
     return () => clearTimeout(openTimer);
-  }, [active]);
-
-  // When the memory modal closes, re-inflate that balloon so it can be popped again
-  useEffect(() => {
-    if (active) return;
-    const t = setTimeout(() => setPopped({}), 400);
-    return () => clearTimeout(t);
   }, [active]);
 
   // Typewriter effect once the envelope is open — Dudu reading slowly
