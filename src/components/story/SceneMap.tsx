@@ -137,7 +137,7 @@ export function SceneMap() {
           Our Relationship Journey
         </motion.h2>
         <p className="mt-3 text-center font-hand text-2xl text-rose-700">
-          Open the little note pinned at each place to read the memory hidden inside. ✉️
+          Tap the little ♥ at each place to reveal the memory hidden inside.
         </p>
 
         <div className="relative mt-10 aspect-[3/2] w-full overflow-hidden rounded-[2rem] shadow-[0_20px_60px_rgba(190,80,110,0.25)] ring-1 ring-rose-200/60">
