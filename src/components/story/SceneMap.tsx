@@ -148,65 +148,35 @@ export function SceneMap() {
             draggable={false}
           />
 
-          {/* A little folded note pinned at each photo — tap to open the memory */}
-          {STOPS.map((s, idx) => {
-            const tilt = [-6, 4, -3, 5, -4, 3, -5][idx % 7];
-            const tints = [
-              "from-rose-50 to-rose-100",
-              "from-pink-50 to-pink-100",
-              "from-amber-50 to-rose-100",
-              "from-fuchsia-50 to-pink-100",
-              "from-rose-100 to-pink-200",
-              "from-pink-50 to-rose-200",
-              "from-amber-50 to-pink-100",
-            ];
-            return (
-              <button
-                key={s.id}
-                onClick={() => setActive(s)}
-                aria-label={`Open the note at ${s.name}`}
-                className="group absolute z-10 -translate-x-1/2 -translate-y-full focus:outline-none"
-                style={{ left: `${s.x}%`, top: `${s.y}%` }}
+          {/* A tiny heart badge with a number at every place — tap to open the memory */}
+          {STOPS.map((s, idx) => (
+            <button
+              key={s.id}
+              onClick={() => setActive(s)}
+              aria-label={`Open memory for ${s.name}`}
+              className="group absolute z-10 -translate-x-1/2 -translate-y-1/2 focus:outline-none"
+              style={{ left: `${s.x}%`, top: `${s.y}%` }}
+            >
+              <motion.span
+                className="relative block"
+                animate={{ scale: [1, 1.08, 1] }}
+                transition={{ duration: 1.8 + idx * 0.15, repeat: Infinity, ease: "easeInOut" }}
               >
-                {/* Little pin stick */}
-                <span className="mx-auto block h-6 w-[2px] bg-rose-400/70" />
-                {/* Folded note */}
-                <motion.span
-                  className="relative -mt-1 block"
-                  animate={{ y: [0, -3, 0], rotate: [tilt - 1, tilt + 1, tilt - 1] }}
-                  transition={{ duration: 3 + idx * 0.2, repeat: Infinity, ease: "easeInOut" }}
-                >
-                  {/* Pin head */}
-                  <span className="absolute -top-2 left-1/2 h-3 w-3 -translate-x-1/2 rounded-full bg-rose-500 shadow ring-2 ring-white" />
-                  <span
-                    className={`relative block rounded-md bg-gradient-to-br ${tints[idx % tints.length]} px-2 py-1.5 shadow-[0_6px_14px_rgba(190,80,110,0.35)] ring-1 ring-rose-200/80 transition group-hover:scale-110 md:px-3 md:py-2`}
-                  >
-                    <span className="flex items-center gap-1">
-                      <span className="flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[9px] font-bold text-white md:h-5 md:w-5 md:text-[10px]">
-                        {idx + 1}
-                      </span>
-                      <span className="font-hand text-[11px] leading-none text-rose-700 md:text-sm">
-                        note ✉
-                      </span>
-                    </span>
-                    {/* faux lines */}
-                    <span className="mt-1 block h-[2px] w-10 rounded bg-rose-300/70 md:w-14" />
-                    <span className="mt-1 block h-[2px] w-8 rounded bg-rose-300/60 md:w-10" />
-                    {/* folded corner */}
-                    <span
-                      className="absolute bottom-0 right-0 h-2 w-2 md:h-3 md:w-3"
-                      style={{
-                        background: "linear-gradient(135deg, transparent 50%, rgba(190,80,110,0.35) 50%)",
-                      }}
-                    />
+                {/* soft glow ring */}
+                <span className="absolute inset-0 -z-10 animate-ping rounded-full bg-rose-400/40" />
+                {/* heart badge */}
+                <span className="relative flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-rose-400 to-rose-600 text-white shadow-[0_4px_10px_rgba(190,80,110,0.5)] ring-2 ring-white transition group-hover:scale-125 md:h-9 md:w-9">
+                  <span className="absolute text-[14px] md:text-[18px]">♥</span>
+                  <span className="relative text-[9px] font-bold leading-none md:text-[11px]">
+                    {idx + 1}
                   </span>
-                  <span className="pointer-events-none absolute -bottom-5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-white/90 px-2 py-0.5 text-[9px] font-medium text-rose-600 opacity-0 shadow transition group-hover:opacity-100 md:text-[10px]">
-                    open me ✨
-                  </span>
-                </motion.span>
-              </button>
-            );
-          })}
+                </span>
+                <span className="pointer-events-none absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap rounded-full bg-white/95 px-2 py-0.5 text-[9px] font-medium text-rose-600 opacity-0 shadow transition group-hover:opacity-100 md:text-[10px]">
+                  tap me ✨
+                </span>
+              </motion.span>
+            </button>
+          ))}
         </div>
 
         <p className="mx-auto mt-8 max-w-xl text-center font-hand text-xl text-rose-800/80">
