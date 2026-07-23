@@ -156,68 +156,62 @@ export function SceneMap() {
             draggable={false}
           />
 
-          {/* A floating balloon at every place — tap to pop and read the memory */}
+          {/* A little folded note pinned at each photo — tap to open the memory */}
           {STOPS.map((s, idx) => {
-            const colors = [
-              "from-rose-400 to-rose-600",
-              "from-pink-400 to-pink-600",
-              "from-fuchsia-400 to-fuchsia-600",
-              "from-red-400 to-rose-500",
-              "from-rose-300 to-pink-500",
-              "from-pink-500 to-rose-600",
-              "from-fuchsia-300 to-rose-500",
+            const tilt = [-6, 4, -3, 5, -4, 3, -5][idx % 7];
+            const tints = [
+              "from-rose-50 to-rose-100",
+              "from-pink-50 to-pink-100",
+              "from-amber-50 to-rose-100",
+              "from-fuchsia-50 to-pink-100",
+              "from-rose-100 to-pink-200",
+              "from-pink-50 to-rose-200",
+              "from-amber-50 to-pink-100",
             ];
-            const isPopped = popped[s.id];
             return (
               <button
                 key={s.id}
-                onClick={() => {
-                  setPopped((p) => ({ ...p, [s.id]: true }));
-                  setTimeout(() => setActive(s), 380);
-                }}
-                aria-label={`Pop the balloon at ${s.name}`}
+                onClick={() => setActive(s)}
+                aria-label={`Open the note at ${s.name}`}
                 className="group absolute z-10 -translate-x-1/2 -translate-y-full focus:outline-none"
                 style={{ left: `${s.x}%`, top: `${s.y}%` }}
               >
-                {/* String */}
-                <span className="mx-auto block h-10 w-[2px] bg-rose-300/80" />
-                {/* Balloon */}
+                {/* Little pin stick */}
+                <span className="mx-auto block h-6 w-[2px] bg-rose-400/70" />
+                {/* Folded note */}
                 <motion.span
-                  className="relative -mt-[46px] block"
-                  animate={
-                    isPopped
-                      ? { scale: [1, 1.4, 0], opacity: [1, 1, 0], rotate: [0, -8, 0] }
-                      : { y: [0, -6, 0], rotate: [-2, 2, -2] }
-                  }
-                  transition={
-                    isPopped
-                      ? { duration: 0.35 }
-                      : { duration: 3 + idx * 0.2, repeat: Infinity, ease: "easeInOut" }
-                  }
+                  className="relative -mt-1 block"
+                  animate={{ y: [0, -3, 0], rotate: [tilt - 1, tilt + 1, tilt - 1] }}
+                  transition={{ duration: 3 + idx * 0.2, repeat: Infinity, ease: "easeInOut" }}
                 >
+                  {/* Pin head */}
+                  <span className="absolute -top-2 left-1/2 h-3 w-3 -translate-x-1/2 rounded-full bg-rose-500 shadow ring-2 ring-white" />
                   <span
-                    className={`relative flex h-10 w-9 items-center justify-center rounded-[50%] bg-gradient-to-br ${colors[idx % colors.length]} text-white shadow-[0_6px_14px_rgba(190,80,110,0.45)] ring-1 ring-white/40 transition group-hover:scale-110 md:h-14 md:w-12`}
+                    className={`relative block rounded-md bg-gradient-to-br ${tints[idx % tints.length]} px-2 py-1.5 shadow-[0_6px_14px_rgba(190,80,110,0.35)] ring-1 ring-rose-200/80 transition group-hover:scale-110 md:px-3 md:py-2`}
                   >
-                    <span className="text-[10px] font-bold md:text-xs">{idx + 1}</span>
-                    <span className="absolute left-1.5 top-1.5 h-2 w-2 rounded-full bg-white/70 md:h-3 md:w-3" />
-                    <span className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-inherit" />
+                    <span className="flex items-center gap-1">
+                      <span className="flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[9px] font-bold text-white md:h-5 md:w-5 md:text-[10px]">
+                        {idx + 1}
+                      </span>
+                      <span className="font-hand text-[11px] leading-none text-rose-700 md:text-sm">
+                        note ✉
+                      </span>
+                    </span>
+                    {/* faux lines */}
+                    <span className="mt-1 block h-[2px] w-10 rounded bg-rose-300/70 md:w-14" />
+                    <span className="mt-1 block h-[2px] w-8 rounded bg-rose-300/60 md:w-10" />
+                    {/* folded corner */}
+                    <span
+                      className="absolute bottom-0 right-0 h-2 w-2 md:h-3 md:w-3"
+                      style={{
+                        background: "linear-gradient(135deg, transparent 50%, rgba(190,80,110,0.35) 50%)",
+                      }}
+                    />
                   </span>
-                  {/* Little "pop me" nudge */}
-                  <span className="pointer-events-none absolute -top-6 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-white/90 px-2 py-0.5 text-[9px] font-medium text-rose-600 opacity-0 shadow transition group-hover:opacity-100 md:text-[10px]">
-                    pop me ✨
+                  <span className="pointer-events-none absolute -bottom-5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-white/90 px-2 py-0.5 text-[9px] font-medium text-rose-600 opacity-0 shadow transition group-hover:opacity-100 md:text-[10px]">
+                    open me ✨
                   </span>
                 </motion.span>
-                {/* Pop burst */}
-                {isPopped && (
-                  <motion.span
-                    className="pointer-events-none absolute left-1/2 top-0 -translate-x-1/2 text-2xl"
-                    initial={{ scale: 0, opacity: 1 }}
-                    animate={{ scale: 2, opacity: 0 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    💥
-                  </motion.span>
-                )}
               </button>
             );
           })}
