@@ -76,131 +76,218 @@ const BOXES: Box[] = [
   { id: "ch", icon: "💬", title: "Notes I Still Scroll Through", kind: "chats", ribbon: "#a35fc4", boxColor: "#f8f0ff" },
 ];
 
-function GiftBox3D({
-  box,
-  index,
-  isOpen,
-  onClick,
-}: {
-  box: Box;
-  index: number;
-  isOpen: boolean;
-  onClick: () => void;
-}) {
+const GOLD = "#d4af37";
+const GOLD_LIGHT = "#f4d97a";
+const BLUSH = "#f7a8c0";
+const BLUSH_DEEP = "#e5657e";
+
+function FloatingBits() {
+  const bits = Array.from({ length: 40 }).map((_, i) => {
+    const kinds = ["❤", "✨", "🌸", "🦋", "✦"];
+    return {
+      i,
+      char: kinds[i % kinds.length],
+      left: Math.random() * 100,
+      delay: Math.random() * 1.5,
+      duration: 3 + Math.random() * 4,
+      size: 12 + Math.random() * 20,
+      drift: (Math.random() - 0.5) * 300,
+    };
+  });
   return (
-    <motion.button
-      key={box.id}
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.1, duration: 0.6 }}
-      whileHover={!isOpen ? { scale: 1.04, y: -4 } : {}}
-      whileTap={!isOpen ? { scale: 0.98 } : {}}
-      onClick={onClick}
-      className="group relative flex flex-col items-center justify-end"
-      style={{ perspective: "800px" }}
-    >
-      <div className="relative h-44 w-36 md:h-52 md:w-44" style={{ perspective: "800px" }}>
-        {/* Lid */}
-        <motion.div
-          animate={isOpen ? { rotateX: -110, y: -8, z: 10 } : { rotateX: 0, y: 0, z: 0 }}
-          transition={{ type: "spring", stiffness: 120, damping: 12 }}
-          className="absolute left-0 top-0 z-20 h-10 w-full origin-bottom rounded-t-lg shadow-md"
+    <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+      {bits.map((b) => (
+        <motion.span
+          key={b.i}
+          initial={{ y: 0, x: 0, opacity: 0, scale: 0.4, rotate: 0 }}
+          animate={{
+            y: -600 - Math.random() * 200,
+            x: b.drift,
+            opacity: [0, 1, 1, 0],
+            scale: [0.4, 1, 1, 0.6],
+            rotate: (Math.random() - 0.5) * 360,
+          }}
+          transition={{ duration: b.duration, delay: b.delay, ease: "easeOut" }}
+          className="absolute"
           style={{
-            background: box.boxColor,
-            border: `2px solid ${box.ribbon}55`,
-            transformStyle: "preserve-3d",
-            boxShadow: isOpen ? "0 12px 24px rgba(0,0,0,0.15)" : "0 4px 10px rgba(0,0,0,0.08)",
+            left: `${b.left}%`,
+            bottom: "45%",
+            fontSize: `${b.size}px`,
+            filter: "drop-shadow(0 0 6px rgba(255,200,220,0.7))",
           }}
         >
-          <div
-            className="absolute inset-x-0 top-1/2 h-2 -translate-y-1/2"
-            style={{ background: box.ribbon }}
-          />
-          <div
-            className="absolute left-1/2 top-1/2 h-6 w-6 -translate-x-1/2 -translate-y-1/2 rounded-full shadow-sm"
-            style={{ background: box.ribbon }}
-          />
-        </motion.div>
+          {b.char}
+        </motion.span>
+      ))}
+    </div>
+  );
+}
+
+function PremiumGiftBox({ opened, onOpen }: { opened: boolean; onOpen: () => void }) {
+  return (
+    <div className="relative flex items-center justify-center" style={{ perspective: "1200px" }}>
+      {/* Glowing aura */}
+      <motion.div
+        animate={{ scale: [1, 1.08, 1], opacity: [0.6, 0.9, 0.6] }}
+        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute h-[380px] w-[380px] rounded-full"
+        style={{
+          background: `radial-gradient(circle, ${GOLD_LIGHT}55 0%, ${BLUSH}33 40%, transparent 70%)`,
+          filter: "blur(30px)",
+        }}
+      />
+
+      {/* Sparkles around box */}
+      {!opened &&
+        Array.from({ length: 14 }).map((_, i) => {
+          const angle = (i / 14) * Math.PI * 2;
+          const r = 170;
+          return (
+            <motion.span
+              key={i}
+              className="absolute text-yellow-200"
+              style={{
+                left: `calc(50% + ${Math.cos(angle) * r}px)`,
+                top: `calc(50% + ${Math.sin(angle) * r}px)`,
+                fontSize: 14 + Math.random() * 10,
+                filter: "drop-shadow(0 0 6px #f4d97a)",
+              }}
+              animate={{ opacity: [0.2, 1, 0.2], scale: [0.6, 1.2, 0.6] }}
+              transition={{ duration: 2 + Math.random() * 2, repeat: Infinity, delay: i * 0.15 }}
+            >
+              ✦
+            </motion.span>
+          );
+        })}
+
+      <div
+        className="relative h-72 w-72 md:h-80 md:w-80"
+        style={{ transformStyle: "preserve-3d", transform: "rotateX(12deg) rotateY(-18deg)" }}
+      >
+        {/* Inner glow when open */}
+        <AnimatePresence>
+          {opened && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.4 }}
+              animate={{ opacity: 1, scale: 1.6 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.2 }}
+              className="absolute left-1/2 top-1/3 z-30 h-40 w-40 -translate-x-1/2 -translate-y-1/2 rounded-full"
+              style={{
+                background: `radial-gradient(circle, #fff2c8 0%, ${GOLD_LIGHT}cc 30%, ${BLUSH}44 60%, transparent 80%)`,
+                filter: "blur(10px)",
+              }}
+            />
+          )}
+        </AnimatePresence>
+
+        {/* Lid */}
+        <motion.div
+          animate={
+            opened
+              ? { rotateX: -125, y: -30, z: 40 }
+              : { rotateX: 0, y: 0, z: 0 }
+          }
+          transition={{ type: "spring", stiffness: 90, damping: 14, delay: opened ? 0.3 : 0 }}
+          className="absolute left-0 top-0 z-20 h-20 w-full origin-bottom rounded-xl"
+          style={{
+            background: `linear-gradient(145deg, #fff5f8 0%, #ffe0ec 50%, #ffc9dd 100%)`,
+            border: `3px solid ${GOLD}`,
+            transformStyle: "preserve-3d",
+            boxShadow: `0 20px 40px ${BLUSH_DEEP}44, inset 0 0 20px ${GOLD}33`,
+          }}
+        />
 
         {/* Box body */}
         <div
-          className="absolute bottom-0 left-0 h-36 w-full rounded-b-lg md:h-44"
+          className="absolute bottom-0 left-0 h-60 w-full rounded-xl"
           style={{
-            background: box.boxColor,
-            border: `2px solid ${box.ribbon}55`,
+            background: `linear-gradient(145deg, #ffd6e5 0%, #ffb8d1 50%, #ff9ec2 100%)`,
+            border: `3px solid ${GOLD}`,
             borderTop: "none",
-            boxShadow: "inset 0 -10px 20px rgba(0,0,0,0.04), 0 8px 20px rgba(0,0,0,0.08)",
+            boxShadow: `0 30px 60px ${BLUSH_DEEP}55, inset 0 -20px 40px ${BLUSH_DEEP}22, inset 0 0 30px ${GOLD}22`,
+            transformStyle: "preserve-3d",
           }}
         >
+          {/* Vertical ribbon */}
           <div
-            className="absolute inset-y-0 left-1/2 w-3 -translate-x-1/2"
-            style={{ background: box.ribbon }}
+            className="absolute inset-y-0 left-1/2 w-6 -translate-x-1/2"
+            style={{
+              background: `linear-gradient(90deg, ${BLUSH_DEEP} 0%, ${BLUSH} 50%, ${BLUSH_DEEP} 100%)`,
+              boxShadow: `0 0 15px ${BLUSH}88`,
+            }}
           />
+          {/* Golden edge highlight */}
           <div
-            className="absolute left-0 top-1/2 h-3 w-full -translate-y-1/2"
-            style={{ background: box.ribbon, opacity: 0.85 }}
+            className="pointer-events-none absolute inset-0 rounded-xl"
+            style={{
+              background: `linear-gradient(180deg, ${GOLD_LIGHT}44 0%, transparent 20%, transparent 80%, ${GOLD}33 100%)`,
+            }}
           />
-
-          {/* Glow inside when open */}
-          <AnimatePresence>
-            {isOpen && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="absolute inset-0 rounded-b-lg"
-                style={{
-                  background: `radial-gradient(circle at center, ${box.ribbon}33 0%, transparent 70%)`,
-                }}
-              />
-            )}
-          </AnimatePresence>
         </div>
 
-        {/* Floating icon / sparkle when open */}
+        {/* Horizontal ribbon + bow (on lid area) */}
         <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: 10, scale: 0.5 }}
-              animate={{ opacity: 1, y: -28, scale: 1 }}
-              exit={{ opacity: 0, y: 0, scale: 0.5 }}
-              transition={{ type: "spring", stiffness: 200, damping: 14 }}
-              className="absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2 text-4xl md:text-5xl drop-shadow-lg"
+          {!opened && (
+            <motion.button
+              onClick={onOpen}
+              exit={{ opacity: 0, scale: 0.4, rotate: 180 }}
+              transition={{ duration: 0.6 }}
+              whileHover={{ scale: 1.08 }}
+              className="absolute left-1/2 top-16 z-40 -translate-x-1/2 cursor-pointer"
+              aria-label="Untie the ribbon"
             >
-              {box.icon}
-            </motion.div>
+              {/* Bow */}
+              <div className="relative flex items-center">
+                <motion.div
+                  animate={{ rotate: [-3, 3, -3] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  className="h-10 w-14 rounded-full"
+                  style={{
+                    background: `radial-gradient(ellipse, ${BLUSH} 0%, ${BLUSH_DEEP} 100%)`,
+                    boxShadow: `0 4px 12px ${BLUSH_DEEP}66, inset 0 0 8px ${GOLD}66`,
+                    transform: "rotate(-25deg)",
+                  }}
+                />
+                <div
+                  className="h-6 w-6 rounded-full"
+                  style={{
+                    background: `radial-gradient(circle, ${GOLD_LIGHT}, ${GOLD})`,
+                    boxShadow: `0 0 12px ${GOLD_LIGHT}`,
+                  }}
+                />
+                <motion.div
+                  animate={{ rotate: [3, -3, 3] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  className="h-10 w-14 rounded-full"
+                  style={{
+                    background: `radial-gradient(ellipse, ${BLUSH} 0%, ${BLUSH_DEEP} 100%)`,
+                    boxShadow: `0 4px 12px ${BLUSH_DEEP}66, inset 0 0 8px ${GOLD}66`,
+                    transform: "rotate(25deg)",
+                  }}
+                />
+              </div>
+            </motion.button>
           )}
         </AnimatePresence>
       </div>
 
-      {/* Label tag */}
-      <motion.div
-        animate={isOpen ? { y: 4 } : { y: 0 }}
-        className="mt-4 rounded-full px-4 py-1.5 text-center text-sm font-semibold shadow-sm backdrop-blur-sm"
-        style={{
-          background: `${box.boxColor}ee`,
-          color: box.ribbon,
-          border: `1.5px solid ${box.ribbon}44`,
-        }}
-      >
-        {isOpen ? "Opened ✨" : "Open me ♡"}
-      </motion.div>
-      <p className="mt-2 max-w-[10rem] text-center font-hand text-lg leading-tight text-rose-800">
-        {box.title}
-      </p>
-    </motion.button>
+      {!opened && (
+        <motion.div
+          animate={{ y: [0, -6, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+          className="absolute -bottom-16 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-white/70 px-5 py-2 font-hand text-lg text-rose-700 shadow backdrop-blur"
+        >
+          Pull the ribbon ✨
+        </motion.div>
+      )}
+    </div>
   );
 }
 
 export function SceneMemories() {
   const [open, setOpen] = useState<Box | null>(null);
-  const [openedIds, setOpenedIds] = useState<Set<string>>(new Set());
-
-  const handleOpen = (box: Box) => {
-    setOpen(box);
-    setOpenedIds((prev) => new Set(prev).add(box.id));
-  };
+  const [unwrapped, setUnwrapped] = useState(false);
 
   return (
     <section className="relative min-h-screen overflow-hidden py-24">
@@ -222,19 +309,68 @@ export function SceneMemories() {
           Beautiful Memories, Wrapped Up
         </motion.h2>
         <p className="mt-2 text-center font-hand text-2xl text-rose-700">
-          Tap each gift box — every one holds a piece of us.
+          {unwrapped ? "Tap each memory to open it ♡" : "Tap the ribbon to unwrap our story ♡"}
         </p>
 
-        <div className="mt-16 grid grid-cols-2 place-items-center gap-10 md:grid-cols-4 lg:grid-cols-7">
-          {BOXES.map((it, i) => (
-            <GiftBox3D
-              key={it.id}
-              box={it}
-              index={i}
-              isOpen={openedIds.has(it.id)}
-              onClick={() => handleOpen(it)}
-            />
-          ))}
+        <div className="relative mt-20 flex min-h-[460px] items-center justify-center">
+          <AnimatePresence>
+            {!unwrapped && (
+              <motion.div
+                key="box"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 1.4, y: -60 }}
+                transition={{ duration: 0.7 }}
+              >
+                <PremiumGiftBox opened={false} onOpen={() => setUnwrapped(true)} />
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {unwrapped && <FloatingBits />}
+
+          {unwrapped && (
+            <div className="grid w-full grid-cols-2 place-items-center gap-6 md:grid-cols-4 lg:grid-cols-7">
+              {BOXES.map((it, i) => (
+                <motion.button
+                  key={it.id}
+                  initial={{ opacity: 0, y: 80, scale: 0.5, rotate: -20 }}
+                  animate={{ opacity: 1, y: 0, scale: 1, rotate: 0 }}
+                  transition={{ delay: 0.2 + i * 0.15, type: "spring", stiffness: 120, damping: 14 }}
+                  whileHover={{ y: -8, scale: 1.05 }}
+                  onClick={() => setOpen(it)}
+                  className="group relative flex h-40 w-full max-w-[10rem] flex-col items-center justify-center rounded-2xl p-4 text-center shadow-xl backdrop-blur-md"
+                  style={{
+                    background: `linear-gradient(135deg, ${it.boxColor}ee 0%, #ffffff88 100%)`,
+                    border: `1.5px solid ${it.ribbon}55`,
+                    boxShadow: `0 10px 30px ${it.ribbon}33, inset 0 1px 0 #ffffff99`,
+                  }}
+                >
+                  <div
+                    className="mb-2 flex h-14 w-14 items-center justify-center rounded-full text-3xl shadow-inner"
+                    style={{
+                      background: `radial-gradient(circle, #fff 0%, ${it.boxColor} 100%)`,
+                      border: `2px solid ${it.ribbon}66`,
+                    }}
+                  >
+                    {it.icon}
+                  </div>
+                  <p
+                    className="font-hand text-sm leading-tight"
+                    style={{ color: it.ribbon }}
+                  >
+                    {it.title}
+                  </p>
+                  <span
+                    className="absolute -top-2 right-2 rounded-full px-2 py-0.5 text-[10px] font-semibold text-white opacity-0 shadow transition-opacity group-hover:opacity-100"
+                    style={{ background: it.ribbon }}
+                  >
+                    open ♡
+                  </span>
+                </motion.button>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
