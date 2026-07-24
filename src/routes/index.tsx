@@ -11,6 +11,22 @@ import { SceneWishes } from "@/components/story/SceneWishes";
 import { SceneFinale } from "@/components/story/SceneFinale";
 
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Nanna Birthday Journey" },
+      {
+        name: "description",
+        content: "A cinematic interactive birthday story for Nanna, filled with memories, wishes, and love.",
+      },
+      { property: "og:title", content: "Nanna Birthday Journey" },
+      {
+        property: "og:description",
+        content: "A cinematic interactive birthday story for Nanna, filled with memories, wishes, and love.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Index,
 });
 
