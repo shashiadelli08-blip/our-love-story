@@ -1,25 +1,43 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { Particles } from "./Particles";
+import readingBook from "@/assets/mascot-reading-book.png";
 
-const LETTER = `My dearest Nanna,
+const LETTER = `Dear Nanna,
 
-If I had to choose one word for what you are to me, it would still not be enough.
-You are my quiet mornings and my noisy laughs, my safest place and my biggest adventure.
+At first...
+You were simply another person.
+A new conversation.
+A new friend.
+A new chapter.
 
-I remember every silly fight and every warm hug that came after.
-I remember every "I'll call you back" that turned into hours.
-I remember every small thing — because with you, nothing is small.
+But little by little...
+You became more.
 
-Thank you for being patient with me on my hard days,
-for celebrating me on my happy ones,
-and for choosing me — again and again.
+I started waiting for your messages.
+I started smiling whenever your name appeared.
+I started sharing parts of myself I never shared with anyone else.
 
-On your birthday, I don't want to give you the world.
-I just want to be your world.
+Your voice became comfort.
+Your presence became peace.
+Your happiness became important.
 
-Forever yours,
-Shashuluu 🐰`;
+And without even realizing it...
+You became home.
+
+Maybe love doesn't always arrive with fireworks.
+Maybe it arrives quietly.
+Message by message.
+Call by call.
+Day by day.
+Heart by heart.
+
+And before I knew it...
+You weren't just part of my life.
+You were part of me.
+
+Love,
+Your Bangaram ❤️`;
 
 export function SceneLetter() {
   const ref = useRef<HTMLDivElement>(null);
@@ -51,8 +69,16 @@ export function SceneLetter() {
           viewport={{ once: true }}
           className="mb-10 text-center font-display text-4xl md:text-5xl text-rose-900"
         >
-          A Letter for You
+          A Letter To My Nanna
         </motion.h2>
+        <motion.img
+          src={readingBook}
+          alt=""
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="relative z-20 mx-auto mb-4 w-16 drop-shadow-xl md:w-20"
+        />
 
         <div className="relative mx-auto aspect-[4/3] w-full max-w-xl">
           <div className="absolute inset-0 rounded-lg bg-[#e6b7a6] shadow-2xl" />

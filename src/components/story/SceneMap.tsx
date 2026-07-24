@@ -1,23 +1,29 @@
+<<<<<<< Updated upstream
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Particles } from "./Particles";
 import journeyMap from "@/assets/journey-map.png.asset.json";
 import duduImg from "@/assets/dudu.png.asset.json";
 import babuImg from "@/assets/babu.png.asset.json";
+=======
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { Particles } from "./Particles";
+import { Dudu, Babu } from "./Characters";
+import journeyMap from "@/assets/journey-map.png";
+>>>>>>> Stashed changes
 
 type Stop = {
   id: string;
   name: string;
-  x: number;
-  y: number;
-  title: string;
-  memory: string;
   emoji: string;
+  message: string;
 };
 
 const STOPS: Stop[] = [
   {
     id: "kims",
+<<<<<<< Updated upstream
     name: "KIMS Degree & PG College",
     x: 15,
     y: 22,
@@ -85,10 +91,59 @@ const STOPS: Stop[] = [
     memory:
       "A table. Two people. Countless feelings. Conversations that carried things words could never fully explain. More laughter. More memories. And another beautiful pin added to our map. A place that will forever remind me of us. 🍵❤️",
     emoji: "🫖",
+=======
+    name: "KIMS Degree & PG College, Karimnagar",
+    emoji: "🎓",
+    message:
+      "The place where our story stepped into reality.\nThe place where strangers became familiar.\nThe place where I first saw you and never knew how important you'd become.\n\n✨ First Meet.\n✨ First Memory.\n✨ First Chapter.",
+  },
+  {
+    id: "geetha",
+    name: "Geetha Bhavan",
+    emoji: "☕",
+    message:
+      "Just tea.\nJust conversations.\nJust a normal day.\n\nYet somehow it became one of my favorite memories.\nBecause it wasn't the tea that made it special.\nIt was you. ☕❤️",
+  },
+  {
+    id: "kulture",
+    name: "Kulture Bakery",
+    emoji: "🥐",
+    message:
+      "A bakery filled with snacks.\nA heart filled with questions.\n\nThe conversations became easier.\nThe smiles became warmer.\nAnd somewhere between those little moments...\nYou started becoming my more than friend. 🥐❤️",
+  },
+  {
+    id: "bimbo",
+    name: "Internship Days — Bimbo Bakeries, Uppal",
+    emoji: "🏭",
+    message:
+      "Busy roads. Monday Market. Crowded streets. Long workdays.\nBut somewhere between all the ordinary moments, we found something extraordinary.\n\nThis wasn't just the place where we learned about work.\nIt was where we learned about each other.\nWhere two souls grew closer every single day.\nWhere every conversation became a safe place.\nWhere we shared our dreams, fears, possessiveness, laughter, late-night thoughts, study plans, and the little details no one else knew.\nWhere we stood beside each other through every situation — not because we had to, but because we wanted to.\n\nWhenever I think about those days, I don't remember the traffic. I don't remember the noise. I don't even remember how tiring the days were.\nI remember you.\n\nBecause this was the place where two lives became one beautiful journey. 🏭❤️",
+  },
+  {
+    id: "dawath",
+    name: "Dawath Arabian Restaurant",
+    emoji: "🍽️",
+    message:
+      "After a long wait...\nTwo hearts finally met again.\n\nGood food. Long conversations. Endless smiles.\nA heart full of all the moments we missed.\n\nOne more stop on our journey.\nOne more memory added to my heart. 🍽️❤️",
+  },
+  {
+    id: "melody",
+    name: "Melody Mings",
+    emoji: "🌙",
+    message:
+      "This stop felt different.\nBecause by then... it wasn't just about spending time together.\nIt wasn't just about conversations.\n\nSomewhere along the way, my heart had already chosen you.\nAnd little by little, I became completely yours. 🌙❤️",
+  },
+  {
+    id: "tealogy",
+    name: "Tealogy, KPHB — Last Meet",
+    emoji: "📍",
+    message:
+      "A table. Two people. Countless feelings.\nConversations that carried things words could never fully explain.\n\nMore laughter. More memories.\nAnd another beautiful pin added to our map.\n\nA place that will forever remind me of us. 📍❤️",
+>>>>>>> Stashed changes
   },
 ];
 
 export function SceneMap() {
+<<<<<<< Updated upstream
   const [active, setActive] = useState<Stop | null>(null);
   const [envOpen, setEnvOpen] = useState(false);
   const [typed, setTyped] = useState("");
@@ -115,6 +170,20 @@ export function SceneMap() {
     }, 32);
     return () => clearInterval(id);
   }, [active, envOpen]);
+=======
+  const [step, setStep] = useState(0);
+  const [openStop, setOpenStop] = useState<Stop | null>(null);
+  const current = STOPS[step];
+
+  const advance = () => {
+    setOpenStop(current);
+  };
+
+  const closeAndContinue = () => {
+    setOpenStop(null);
+    setStep((s) => Math.min(s + 1, STOPS.length - 1));
+  };
+>>>>>>> Stashed changes
 
   return (
     <section className="relative min-h-screen overflow-hidden py-24">
@@ -127,13 +196,65 @@ export function SceneMap() {
       />
       <Particles count={20} kinds={["heart", "sparkle"]} tint="text-rose-400/70" />
 
-      <div className="relative z-10 mx-auto max-w-6xl px-6">
+      <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="font-display text-4xl md:text-6xl text-rose-900"
+        >
+          Two Different Places, One Beautiful Destiny
+        </motion.h2>
+
+        <div className="mt-10 grid gap-6 md:grid-cols-2">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="glass-card rounded-3xl p-6"
+          >
+            <p className="font-hand text-2xl text-rose-700">📍 Raddepally</p>
+            <p className="mt-2 text-rose-950/80">
+              There lived a boy. Living his own life. Following his own dreams.
+              Writing his own story.
+            </p>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="glass-card rounded-3xl p-6"
+          >
+            <p className="font-hand text-2xl text-rose-700">📍 Vemulawada</p>
+            <p className="mt-2 text-rose-950/80">
+              There lived a girl. Living her own life. Following her own
+              dreams. Writing her own story.
+            </p>
+          </motion.div>
+        </div>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
+          className="mx-auto mt-8 max-w-xl font-hand text-xl text-rose-800"
+        >
+          Different places. Different roads. Different lives. Yet destiny was
+          already drawing a route between them — a route called "Us." And one
+          day, a simple message arrived. Just a "Hi." Sometimes the most
+          beautiful stories begin with the smallest moments. And ours did too.
+        </motion.p>
+      </div>
+
+      <div className="relative z-10 mx-auto mt-20 max-w-6xl px-6">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="text-center font-display text-4xl md:text-6xl text-rose-900"
         >
+<<<<<<< Updated upstream
           Our Relationship Journey
         </motion.h2>
         <p className="mt-3 text-center font-hand text-2xl text-rose-700">
@@ -177,6 +298,69 @@ export function SceneMap() {
               </motion.span>
             </button>
           ))}
+=======
+          The Route We Travelled Together
+        </motion.h2>
+        <p className="mt-3 text-center font-hand text-2xl text-rose-700">
+          🐰❤️🐻 Every step, another memory.
+        </p>
+
+        <motion.img
+          src={journeyMap}
+          alt="Our relationship journey map"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1 }}
+          className="mx-auto mt-10 w-full max-w-md rounded-[2rem] shadow-2xl ring-4 ring-white/60"
+          style={{ filter: "contrast(1.06) saturate(1.1)" }}
+        />
+
+        <div className="mt-14 flex flex-col items-center">
+          <p className="mb-6 font-hand text-xl text-rose-700">
+            Stop {step + 1} of {STOPS.length}
+          </p>
+
+          <div className="flex w-full max-w-lg items-center justify-center gap-4">
+            <motion.div
+              key={`dudu-${step}`}
+              initial={{ x: -40, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.8 }}
+              className="w-16 md:w-20"
+            >
+              <Dudu />
+            </motion.div>
+
+            <motion.button
+              onClick={advance}
+              whileHover={{ scale: 1.08 }}
+              whileTap={{ scale: 0.94 }}
+              animate={{ y: [0, -8, 0] }}
+              transition={{ y: { duration: 2.4, repeat: Infinity, ease: "easeInOut" } }}
+              className="flex h-24 w-24 flex-col items-center justify-center rounded-full bg-white text-3xl shadow-[0_10px_30px_rgba(200,90,90,0.35)] ring-2 ring-rose-300 md:h-28 md:w-28"
+            >
+              <span>{current.emoji}</span>
+              <span className="mt-1 text-[10px] font-medium text-rose-700">
+                tap the balloon
+              </span>
+            </motion.button>
+
+            <motion.div
+              key={`babu-${step}`}
+              initial={{ x: 40, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.8 }}
+              className="w-16 md:w-20"
+            >
+              <Babu className="-scale-x-100" />
+            </motion.div>
+          </div>
+
+          <p className="mt-6 font-hand text-2xl text-rose-800">
+            📍 {current.name}
+          </p>
+>>>>>>> Stashed changes
         </div>
 
         <p className="mx-auto mt-8 max-w-xl text-center font-hand text-xl text-rose-800/80">
@@ -185,14 +369,10 @@ export function SceneMap() {
         </p>
       </div>
 
-      {active && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="fixed inset-0 z-40 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm"
-          onClick={() => setActive(null)}
-        >
+      <AnimatePresence>
+        {openStop && (
           <motion.div
+<<<<<<< Updated upstream
             initial={{ scale: 0.85, y: 30 }}
             animate={{ scale: 1, y: 0 }}
             onClick={(e) => e.stopPropagation()}
@@ -285,12 +465,40 @@ export function SceneMap() {
             <button
               onClick={() => setActive(null)}
               className="mt-6 rounded-full bg-rose-500 px-6 py-2 text-sm font-medium text-white shadow hover:bg-rose-600"
+=======
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-40 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm"
+            onClick={closeAndContinue}
+          >
+            <motion.div
+              initial={{ scale: 0.85, y: 30 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-lg overflow-hidden rounded-3xl glass-card p-8 text-center"
+>>>>>>> Stashed changes
             >
-              Close ♡
-            </button>
+              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-rose text-3xl">
+                {openStop.emoji}
+              </div>
+              <h3 className="font-display text-2xl text-rose-900 md:text-3xl">
+                {openStop.name}
+              </h3>
+              <p className="mt-4 whitespace-pre-line text-left text-base leading-relaxed text-rose-950/80">
+                {openStop.message}
+              </p>
+              <button
+                onClick={closeAndContinue}
+                className="mt-6 rounded-full bg-rose-500 px-6 py-2 text-sm font-medium text-white shadow hover:bg-rose-600"
+              >
+                {step < STOPS.length - 1 ? "Next stop ♡" : "Close ♡"}
+              </button>
+            </motion.div>
           </motion.div>
-        </motion.div>
-      )}
+        )}
+      </AnimatePresence>
     </section>
   );
 }

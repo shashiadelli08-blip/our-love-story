@@ -52,6 +52,52 @@ export function SceneFinale() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 1 }}
+          className="mt-8 max-w-xl mx-auto font-hand text-xl leading-relaxed text-rose-100 md:text-2xl"
+        >
+          And here we are. The final page. The end of this website. But never
+          the end of the memories. Thank you for every conversation. Thank you
+          for every smile. Thank you for every laugh. Thank you for every
+          lesson. Thank you for every memory that became part of my life.
+        </motion.p>
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 1.6 }}
+          className="mt-6 max-w-xl mx-auto font-hand text-xl leading-relaxed text-rose-100 md:text-2xl"
+        >
+          If I could go back to the very beginning, I would still answer that
+          first message. I would still walk that first step. I would still
+          choose that journey. And I would still choose you. Again. And again.
+          And again.
+        </motion.p>
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 2.2 }}
+          className="mt-6 max-w-xl mx-auto font-hand text-xl leading-relaxed text-rose-100 md:text-2xl"
+        >
+          Happy Birthday, Nanna. I hope life gives you every happiness you
+          deserve. And if someday destiny decides to cross our paths again,
+          you'll still find a little corner of my heart waiting for you.
+        </motion.p>
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 2.8 }}
+          className="mt-6 font-hand text-2xl text-rose-100 md:text-3xl"
+        >
+          With love. With gratitude. With hope. And with a tiny tear in my
+          eyes... I love you. Always and ever and ever you my everything and
+          one incomplete wish.
+        </motion.p>
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 3.4 }}
           className="mt-6 font-hand text-3xl md:text-4xl text-rose-100"
         >
           Forever Your Bangaram
@@ -60,10 +106,13 @@ export function SceneFinale() {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ delay: 1.6 }}
-          className="mt-2 font-hand text-2xl text-rose-200"
+          transition={{ delay: 4 }}
+          className="mt-3 font-hand text-xl leading-relaxed text-rose-200 md:text-2xl"
         >
-          🐰 Shashuluu — To My Nanna 🐻
+          🐰 Shashuluu, chotulu, and prathya parthyaksha daivam ani wife...
+          and I missed you so much.
+          <br />
+          To My Nanna 🐻
         </motion.p>
 
         <div className="relative mt-14 flex items-center justify-center">
@@ -72,7 +121,7 @@ export function SceneFinale() {
             whileInView={{ x: 0, opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 2, delay: 0.4 }}
-            className="w-32 md:w-44"
+            className="w-24 md:w-32"
           >
             <Dudu />
           </motion.div>
@@ -90,7 +139,7 @@ export function SceneFinale() {
             whileInView={{ x: 0, opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 2, delay: 0.4 }}
-            className="-ml-6 w-32 md:w-44"
+            className="-ml-6 w-24 md:w-32"
           >
             <Babu className="-scale-x-100" />
           </motion.div>

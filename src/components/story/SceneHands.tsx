@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Babu, Dudu, HeartBurst } from "./Characters";
 import { Particles } from "./Particles";
+import handshakeBanner from "@/assets/mascot-handshake-banner.png";
 
 export function SceneHands({ onNext }: { onNext: () => void }) {
   return (
@@ -13,13 +14,24 @@ export function SceneHands({ onNext }: { onNext: () => void }) {
         }}
       />
       <Particles count={18} kinds={["heart", "petal", "sparkle"]} tint="text-rose-400" />
+
+      <motion.p
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.2 }}
+        className="relative z-10 mb-8 max-w-md px-6 text-center font-hand text-2xl text-rose-700"
+      >
+        The screen is quiet. On one side stands Dudu 🐰. On the other stands
+        Babu 🐻. For a moment... they simply look at each other.
+      </motion.p>
       <div className="relative z-10 flex w-full max-w-5xl items-end justify-center gap-2 px-6 md:gap-0">
         <motion.div
           initial={{ x: -120, opacity: 0 }}
           whileInView={{ x: 0, opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1.4, ease: "easeOut" }}
-          className="w-40 md:w-64"
+          className="w-28 md:w-40"
         >
           <Dudu className="drop-shadow-xl" />
         </motion.div>
@@ -39,7 +51,7 @@ export function SceneHands({ onNext }: { onNext: () => void }) {
           whileInView={{ x: 0, opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1.4, ease: "easeOut" }}
-          className="w-40 md:w-64"
+          className="w-28 md:w-40"
         >
           <Babu className="drop-shadow-xl -scale-x-100" />
         </motion.div>
@@ -55,6 +67,17 @@ export function SceneHands({ onNext }: { onNext: () => void }) {
         Two hearts, one path.
       </motion.p>
 
+      <motion.img
+        src={handshakeBanner}
+        alt="Take my hand"
+        initial={{ opacity: 0, scale: 0.85 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ delay: 2.3, duration: 0.9 }}
+        onClick={onNext}
+        className="relative z-10 mt-8 w-48 cursor-pointer drop-shadow-xl transition hover:scale-105 md:w-56"
+      />
+
       <motion.button
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -62,7 +85,7 @@ export function SceneHands({ onNext }: { onNext: () => void }) {
         transition={{ delay: 2.6, duration: 0.8 }}
         onClick={onNext}
         whileHover={{ scale: 1.05 }}
-        className="relative z-10 mt-8 rounded-full bg-white/70 px-8 py-3 font-medium text-rose-700 shadow-md ring-1 ring-rose-200 backdrop-blur"
+        className="relative z-10 mt-4 rounded-full bg-white/70 px-8 py-3 font-medium text-rose-700 shadow-md ring-1 ring-rose-200 backdrop-blur"
       >
         ✨ Take My Hand ✨
       </motion.button>
