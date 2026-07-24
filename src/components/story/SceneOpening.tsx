@@ -5,30 +5,7 @@ import { StarField, Particles } from "./Particles";
 const SECRET = "143"; // "I love you" in numbers
 type Stage = "closed" | "opening" | "lock" | "unlocked";
 
-const OPENING_LETTER = `If you're reading this, it means you've opened a little piece of my heart.
-
-Today is your day.
-But this isn't just a birthday gift.
-It's our journey.
-
-A journey made of memories, smiles, laughter, tears, lessons, and love.
-
-Some gifts are wrapped in paper.
-Some gifts are bought with money.
-But this gift is wrapped in moments.
-Wrapped in memories.
-Wrapped in every feeling I ever had for you.
-
-So today...
-Take bubu's hand one more time.
-And let's walk through our story together.
-
-Welcome to our little world, Nanna. ❤️
-
-With all my love,`;
-
 export function SceneOpening({ onBegin }: { onBegin: () => void }) {
-<<<<<<< Updated upstream
   const [stage, setStage] = useState<Stage>("closed");
   const [code, setCode] = useState("");
   const [error, setError] = useState(false);
@@ -41,46 +18,24 @@ export function SceneOpening({ onBegin }: { onBegin: () => void }) {
   const press = (n: string) => {
     if (stage !== "lock") return;
     setError(false);
-    if (n === "⌫") return setCode((c) => c.slice(0, -1));
+
+    if (n === "⌫") {
+      setCode((current) => current.slice(0, -1));
+      return;
+    }
+
     if (n === "✓") {
-      if (code === SECRET) setStage("unlocked");
-      else {
+      if (code === SECRET) {
+        setStage("unlocked");
+      } else {
         setError(true);
         setTimeout(() => setCode(""), 500);
       }
       return;
     }
-    if (code.length < 3) setCode((c) => c + n);
-  };
-=======
-  const [stage, setStage] = useState<"note" | "tag" | "letter" | "title">("note");
-  const [t1, setT1] = useState("");
-  const [t2, setT2] = useState("");
-  const [done, setDone] = useState(false);
-  const btn = useAnimation();
 
-  useEffect(() => {
-    if (stage !== "title") return;
-    let i = 0;
-    const id1 = setInterval(() => {
-      i++;
-      setT1(LINE_1.slice(0, i));
-      if (i >= LINE_1.length) {
-        clearInterval(id1);
-        let j = 0;
-        const id2 = setInterval(() => {
-          j++;
-          setT2(LINE_2.slice(0, j));
-          if (j >= LINE_2.length) {
-            clearInterval(id2);
-            setTimeout(() => setDone(true), 400);
-          }
-        }, 55);
-      }
-    }, 110);
-    return () => clearInterval(id1);
-  }, [stage]);
->>>>>>> Stashed changes
+    if (code.length < 3) setCode((current) => current + n);
+  };
 
   // auto-submit at 3 digits
   useEffect(() => {
@@ -113,7 +68,6 @@ export function SceneOpening({ onBegin }: { onBegin: () => void }) {
           boxShadow: "0 0 90px 24px rgba(255, 220, 140, 0.4)",
         }}
       />
-<<<<<<< Updated upstream
 
       <div className="relative z-10 flex w-full flex-col items-center px-6 text-center">
         <AnimatePresence mode="wait">
@@ -220,7 +174,7 @@ export function SceneOpening({ onBegin }: { onBegin: () => void }) {
                 initial={{ opacity: 0, scale: 0.7 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.7, duration: 1.2 }}
-                className="font-display text-6xl md:text-8xl font-semibold text-glow"
+                className="font-display text-6xl font-semibold text-glow md:text-8xl"
               >
                 ❤️ NANNA ❤️
               </motion.h1>
@@ -228,7 +182,7 @@ export function SceneOpening({ onBegin }: { onBegin: () => void }) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.4, duration: 1 }}
-                className="mt-6 font-display text-2xl md:text-4xl text-rose-50/90"
+                className="mt-6 font-display text-2xl text-rose-50/90 md:text-4xl"
               >
                 Happy Birthday, My Love
               </motion.p>
@@ -246,104 +200,6 @@ export function SceneOpening({ onBegin }: { onBegin: () => void }) {
             </motion.div>
           )}
         </AnimatePresence>
-=======
-      <div className="relative z-10 flex w-full flex-col items-center px-6 text-center">
-        {stage === "note" && (
-          <motion.button
-            initial={{ opacity: 0, scale: 0.6, y: 30 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            whileHover={{ scale: 1.06 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setStage("tag")}
-            className="flex flex-col items-center gap-4"
-          >
-            <motion.span
-              animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-              className="text-6xl"
-            >
-              💌
-            </motion.span>
-            <span className="rounded-full bg-white/10 px-6 py-3 font-hand text-2xl text-rose-100 ring-1 ring-rose-200/40 backdrop-blur">
-              You have a message... tap to open
-            </span>
-          </motion.button>
-        )}
-
-        {stage === "tag" && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="flex flex-col items-center"
-          >
-            <motion.span
-              initial={{ scale: 0, rotate: -8 }}
-              animate={{ scale: 1, rotate: -3 }}
-              transition={{ type: "spring", duration: 1 }}
-              onAnimationComplete={() => setTimeout(() => setStage("letter"), 900)}
-              className="rounded-2xl bg-gradient-rose px-8 py-4 font-display text-4xl text-white shadow-[var(--shadow-glow)] md:text-5xl"
-            >
-              ❤️ Nanna ❤️
-            </motion.span>
-          </motion.div>
-        )}
-
-        {stage === "letter" && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            className="max-w-xl rounded-3xl bg-white/10 p-6 text-left backdrop-blur ring-1 ring-rose-200/30 md:p-10"
-          >
-            <p className="whitespace-pre-line font-hand text-lg leading-relaxed text-rose-50/95 md:text-xl">
-              {OPENING_LETTER}
-            </p>
-            <motion.button
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.5 }}
-              onClick={() => setStage("title")}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.97 }}
-              className="mt-8 rounded-full bg-gradient-rose px-6 py-3 text-base font-medium text-white shadow-[var(--shadow-glow)]"
-            >
-              Continue ❤️
-            </motion.button>
-          </motion.div>
-        )}
-
-        {stage === "title" && (
-          <>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 1.2 }}
-              className="mb-6 font-hand text-2xl text-rose-100/80"
-            >
-              A little story, just for you...
-            </motion.p>
-            <h1 className="font-display text-6xl md:text-8xl font-semibold text-glow">
-              {t1}
-              <span className="inline-block w-[2px] translate-y-2 animate-pulse bg-rose-200 align-middle" />
-            </h1>
-            <p className="mt-6 font-display text-2xl md:text-4xl text-rose-50/90">
-              {t2}
-            </p>
-            <motion.button
-              initial={{ opacity: 0, y: 30, scale: 0.9 }}
-              animate={btn}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              onClick={onBegin}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.97 }}
-              className="mt-14 rounded-full bg-gradient-rose px-8 py-4 text-lg font-medium text-white shadow-[var(--shadow-glow)] transition"
-            >
-              Begin Our Journey ❤️
-            </motion.button>
-          </>
-        )}
->>>>>>> Stashed changes
       </div>
     </section>
   );
@@ -364,14 +220,16 @@ function GiftBox({ opening, onClick }: { opening: boolean; onClick?: () => void 
       />
 
       {/* Box base */}
-      <div className="absolute bottom-0 left-1/2 h-32 w-48 -translate-x-1/2 rounded-md shadow-2xl"
+      <div
+        className="absolute bottom-0 left-1/2 h-32 w-48 -translate-x-1/2 rounded-md shadow-2xl"
         style={{
           background: "linear-gradient(180deg, #d94f7a 0%, #b83863 100%)",
           boxShadow: "0 20px 40px -10px rgba(217,79,122,0.6), inset 0 -8px 20px rgba(0,0,0,0.25)",
         }}
       >
         {/* vertical ribbon */}
-        <div className="absolute left-1/2 top-0 h-full w-6 -translate-x-1/2"
+        <div
+          className="absolute left-1/2 top-0 h-full w-6 -translate-x-1/2"
           style={{ background: "linear-gradient(180deg, #ffd66e, #f2a93b)" }}
         />
       </div>
@@ -383,24 +241,24 @@ function GiftBox({ opening, onClick }: { opening: boolean; onClick?: () => void 
         style={{ transformOrigin: "50% 100%", transformStyle: "preserve-3d" }}
         className="absolute left-1/2 top-8 h-12 w-52 -translate-x-1/2 rounded-md"
       >
-        <div className="relative h-full w-full rounded-md"
+        <div
+          className="relative h-full w-full rounded-md"
           style={{
             background: "linear-gradient(180deg, #e85d88 0%, #c74572 100%)",
             boxShadow: "0 10px 25px -5px rgba(0,0,0,0.4), inset 0 -6px 10px rgba(0,0,0,0.2)",
           }}
         >
           {/* horizontal ribbon on lid */}
-          <div className="absolute left-1/2 top-0 h-full w-6 -translate-x-1/2"
+          <div
+            className="absolute left-1/2 top-0 h-full w-6 -translate-x-1/2"
             style={{ background: "linear-gradient(180deg, #ffd66e, #f2a93b)" }}
           />
           {/* bow */}
-          <div className="absolute left-1/2 top-[-22px] -translate-x-1/2 text-4xl">
-            🎀
-          </div>
+          <div className="absolute left-1/2 top-[-22px] -translate-x-1/2 text-4xl">🎀</div>
         </div>
       </motion.div>
 
-      {/* Sparkles on hover / opening */}
+      {/* Sparkles on opening */}
       <AnimatePresence>
         {opening && (
           <>
