@@ -107,58 +107,14 @@ export function SceneMap() {
           viewport={{ once: true }}
           className="font-display text-4xl text-rose-900 md:text-6xl"
         >
-          Two Different Places, One Beautiful Destiny
-        </motion.h2>
-
-        <div className="mt-10 grid gap-6 md:grid-cols-2">
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="glass-card rounded-3xl p-6"
-          >
-            <p className="font-hand text-2xl text-rose-700">📍 Raddepally</p>
-            <p className="mt-2 text-rose-950/80">
-              There lived a boy. Living his own life. Following his own dreams. Writing his own story.
-            </p>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="glass-card rounded-3xl p-6"
-          >
-            <p className="font-hand text-2xl text-rose-700">📍 Vemulawada</p>
-            <p className="mt-2 text-rose-950/80">
-              There lived a girl. Living her own life. Following her own dreams. Writing her own story.
-            </p>
-          </motion.div>
-        </div>
-
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
-          className="mx-auto mt-8 max-w-xl font-hand text-xl text-rose-800"
-        >
-          Different places. Different roads. Different lives. Yet destiny was already drawing a route between them — a route called "Us."
-        </motion.p>
-      </div>
-
-      <div className="relative z-10 mx-auto mt-20 max-w-6xl px-6">
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center font-display text-4xl text-rose-900 md:text-6xl"
-        >
           Our Relationship Journey
         </motion.h2>
-        <p className="mt-3 text-center font-hand text-2xl text-rose-700">
+        <p className="mt-3 font-hand text-2xl text-rose-700">
           Tap the little ♥ at each place to reveal the memory hidden inside.
         </p>
+      </div>
 
+      <div className="relative z-10 mx-auto mt-10 max-w-6xl px-6">
         <div className="relative mt-10 aspect-[3/2] w-full overflow-hidden rounded-[2rem] shadow-[0_20px_60px_rgba(190,80,110,0.25)] ring-1 ring-rose-200/60">
           <img
             src={journeyMap.url}
