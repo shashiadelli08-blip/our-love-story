@@ -186,14 +186,53 @@ export function SceneOpening({ onBegin }: { onBegin: () => void }) {
               >
                 Happy Birthday, My Love
               </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.8, duration: 1 }}
+                className="mt-8 rounded-2xl border border-rose-200/20 bg-white/5 px-6 py-5 backdrop-blur-md"
+              >
+                <p className="mb-4 font-hand text-lg text-rose-100/80">
+                  It's been...
+                </p>
+                <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+                  {[
+                    { icon: "❤️", value: "428", label: "Days" },
+                    { icon: "⏰", value: "10,272", label: "Hours" },
+                    { icon: "⏱️", value: "616,320", label: "Minutes" },
+                    { icon: "✨", value: "36,979,200", label: "Seconds" },
+                  ].map((item, i) => (
+                    <motion.div
+                      key={item.label}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 2 + i * 0.15, duration: 0.6 }}
+                      className="flex flex-col items-center"
+                    >
+                      <span className="text-2xl">{item.icon}</span>
+                      <span className="font-display text-2xl font-semibold text-rose-50 md:text-3xl">
+                        {item.value}
+                      </span>
+                      <span className="font-hand text-sm text-rose-100/60">
+                        {item.label}
+                      </span>
+                    </motion.div>
+                  ))}
+                </div>
+                <p className="mt-4 font-hand text-base text-rose-100/70">
+                  ...since our journey began, and every single second has been a part of my story with you. 💖
+                </p>
+              </motion.div>
+
               <motion.button
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 2.2, duration: 0.8 }}
+                transition={{ delay: 3, duration: 0.8 }}
                 onClick={onBegin}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.97 }}
-                className="mt-12 rounded-full bg-gradient-rose px-8 py-4 text-lg font-medium text-white shadow-[var(--shadow-glow)]"
+                className="mt-10 rounded-full bg-gradient-rose px-8 py-4 text-lg font-medium text-white shadow-[var(--shadow-glow)]"
               >
                 Begin Our Journey ❤️
               </motion.button>
