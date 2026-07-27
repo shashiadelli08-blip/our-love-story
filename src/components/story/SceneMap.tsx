@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { Particles } from "./Particles";
-import journeyMap from "@/assets/journey-map.png.asset.json";
+import journeyMap from "@/assets/journey-map-hq.png";
 
 type Stop = {
   id: string;
@@ -117,7 +117,7 @@ export function SceneMap() {
       <div className="relative z-10 mx-auto mt-10 max-w-6xl px-6">
         <div className="relative mt-10 aspect-[3/2] w-full overflow-hidden rounded-[2rem] shadow-[0_20px_60px_rgba(190,80,110,0.25)] ring-1 ring-rose-200/60">
           <img
-            src={journeyMap.url}
+            src={journeyMap}
             alt="Our relationship journey map with all our favorite places"
             className="absolute inset-0 h-full w-full object-cover"
             draggable={false}

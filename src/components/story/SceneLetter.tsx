@@ -67,26 +67,30 @@ export function SceneLetter() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mb-10 text-center font-display text-4xl md:text-5xl text-rose-900"
+          className="relative z-30 mb-8 text-center font-display text-4xl md:text-5xl text-rose-900"
         >
           A Letter To My Nanna
         </motion.h2>
+
         <motion.img
           src={readingBook}
           alt=""
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="relative z-20 mx-auto mb-4 w-16 drop-shadow-xl md:w-20"
+          className="relative z-30 mx-auto mb-4 w-16 drop-shadow-xl md:w-20"
         />
 
-        <div className="relative mx-auto aspect-[4/3] w-full max-w-xl">
+        <div className="relative z-10 mx-auto mt-6 aspect-[4/3] w-full max-w-xl">
+          {/* Envelope backing card */}
           <div className="absolute inset-0 rounded-lg bg-[#e6b7a6] shadow-2xl" />
+
+          {/* Letter sheet */}
           <motion.div
             initial={{ y: 0, rotate: 0 }}
             animate={opened ? { y: "-8%", rotate: -1, scale: 1.02 } : {}}
             transition={{ duration: 1.2, ease: "easeOut" }}
-            className="absolute inset-3 overflow-hidden rounded-md p-6 text-left md:p-10"
+            className="absolute inset-3 z-10 overflow-hidden rounded-md p-6 text-left md:p-10"
             style={{
               background: "linear-gradient(180deg, #fdf5e6 0%, #f5e4c5 100%)",
               boxShadow: "0 20px 40px -20px rgba(120, 50, 30, 0.4)",
@@ -108,23 +112,27 @@ export function SceneLetter() {
               {LETTER}
             </motion.pre>
           </motion.div>
+
+          {/* Envelope flap — sits above the letter while closed, drops behind it once opened */}
           <motion.div
             initial={{ rotateX: 0 }}
             animate={opened ? { rotateX: -180 } : {}}
             transition={{ duration: 1.2, ease: "easeInOut" }}
             style={{ transformOrigin: "top", transformStyle: "preserve-3d" }}
-            className="absolute inset-x-0 top-0 h-1/2"
+            className={`absolute inset-x-0 top-0 h-1/2 ${opened ? "z-0" : "z-20"}`}
           >
             <div
-              className="h-full w-full"
+              className="relative h-full w-full"
               style={{
-                background: "linear-gradient(180deg, #d99783 0%, #c47a66 100%)",
+                background: "linear-gradient(165deg, #e8a892 0%, #d99783 45%, #c47a66 100%)",
                 clipPath: "polygon(0 0, 100% 0, 50% 100%)",
+                boxShadow: "inset 0 -12px 24px -8px rgba(90, 40, 25, 0.35)",
               }}
             />
           </motion.div>
+
           {!opened && (
-            <div className="absolute left-1/2 top-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2 rounded-full bg-rose-700 text-center leading-[3rem] text-white shadow-md">
+            <div className="absolute left-1/2 top-1/2 z-30 h-12 w-12 -translate-x-1/2 -translate-y-1/2 rounded-full bg-rose-700 text-center leading-[3rem] text-white shadow-md">
               ♥
             </div>
           )}
