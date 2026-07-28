@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { Particles } from "./Particles";
+import { TiltCard } from "./TiltCard";
 import journeyMap from "@/assets/journey-map-hq.png";
 
 type Stop = {
@@ -115,39 +116,41 @@ export function SceneMap() {
       </div>
 
       <div className="relative z-10 mx-auto mt-10 max-w-6xl px-6">
-        <div className="relative mt-10 aspect-[3/2] w-full overflow-hidden rounded-[2rem] shadow-[0_20px_60px_rgba(190,80,110,0.25)] ring-1 ring-rose-200/60">
-          <img
-            src={journeyMap}
-            alt="Our relationship journey map with all our favorite places"
-            className="absolute inset-0 h-full w-full object-cover"
-            draggable={false}
-          />
+        <TiltCard className="mt-10 aspect-[3/2] w-full" max={6}>
+          <div className="relative h-full w-full overflow-hidden rounded-[2rem] shadow-[0_20px_60px_rgba(190,80,110,0.25)] ring-1 ring-rose-200/60">
+            <img
+              src={journeyMap}
+              alt="Our relationship journey map with all our favorite places"
+              className="absolute inset-0 h-full w-full object-cover"
+              draggable={false}
+            />
 
-          {STOPS.map((stop, idx) => (
-            <button
-              key={stop.id}
-              onClick={() => setActive(stop)}
-              aria-label={`Open memory for ${stop.name}`}
-              className="group absolute z-10 -translate-x-1/2 -translate-y-1/2 focus:outline-none"
-              style={{ left: `${stop.x}%`, top: `${stop.y}%` }}
-            >
-              <motion.span
-                className="relative block"
-                animate={{ scale: [1, 1.08, 1] }}
-                transition={{ duration: 1.8 + idx * 0.15, repeat: Infinity, ease: "easeInOut" }}
+            {STOPS.map((stop, idx) => (
+              <button
+                key={stop.id}
+                onClick={() => setActive(stop)}
+                aria-label={`Open memory for ${stop.name}`}
+                className="group absolute z-10 -translate-x-1/2 -translate-y-1/2 focus:outline-none"
+                style={{ left: `${stop.x}%`, top: `${stop.y}%` }}
               >
-                <span className="absolute inset-0 -z-10 animate-ping rounded-full bg-rose-400/40" />
-                <span className="relative flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-rose-400 to-rose-600 text-white shadow-[0_4px_10px_rgba(190,80,110,0.5)] ring-2 ring-white transition group-hover:scale-125 md:h-9 md:w-9">
-                  <span className="absolute text-[14px] md:text-[18px]">♥</span>
-                  <span className="relative text-[9px] font-bold leading-none md:text-[11px]">{idx + 1}</span>
-                </span>
-                <span className="pointer-events-none absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap rounded-full bg-white/95 px-2 py-0.5 text-[9px] font-medium text-rose-600 opacity-0 shadow transition group-hover:opacity-100 md:text-[10px]">
-                  tap me ✨
-                </span>
-              </motion.span>
-            </button>
-          ))}
-        </div>
+                <motion.span
+                  className="relative block"
+                  animate={{ scale: [1, 1.08, 1] }}
+                  transition={{ duration: 1.8 + idx * 0.15, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  <span className="absolute inset-0 -z-10 animate-ping rounded-full bg-rose-400/40" />
+                  <span className="relative flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-rose-400 to-rose-600 text-white shadow-[0_4px_10px_rgba(190,80,110,0.5)] ring-2 ring-white transition group-hover:scale-125 md:h-9 md:w-9">
+                    <span className="absolute text-[14px] md:text-[18px]">♥</span>
+                    <span className="relative text-[9px] font-bold leading-none md:text-[11px]">{idx + 1}</span>
+                  </span>
+                  <span className="pointer-events-none absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap rounded-full bg-white/95 px-2 py-0.5 text-[9px] font-medium text-rose-600 opacity-0 shadow transition group-hover:opacity-100 md:text-[10px]">
+                    tap me ✨
+                  </span>
+                </motion.span>
+              </button>
+            ))}
+          </div>
+        </TiltCard>
 
         <p className="mx-auto mt-8 max-w-xl text-center font-hand text-xl text-rose-800/80">
           "It's not about where we go, but who we have by our side. Here's to us, always &amp; forever." ♡

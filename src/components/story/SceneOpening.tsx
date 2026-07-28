@@ -5,10 +5,45 @@ import { StarField, Particles } from "./Particles";
 const SECRET = "143"; // "I love you" in numbers
 type Stage = "closed" | "opening" | "lock" | "unlocked";
 
+// Anchor for the live "It's been..." counter — 428 days before this was set up.
+// Update this if the real anniversary date/time is different.
+const START_DATE = new Date("2025-05-24T00:00:00");
+
+function useElapsed(startDate: Date) {
+  const [elapsed, setElapsed] = useState(() => Date.now() - startDate.getTime());
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setElapsed(Date.now() - startDate.getTime());
+    }, 1000);
+    return () => clearInterval(id);
+  }, [startDate]);
+
+  const totalSeconds = Math.max(0, Math.floor(elapsed / 1000));
+  return {
+    days: Math.floor(totalSeconds / 86400),
+    hours: Math.floor(totalSeconds / 3600),
+    minutes: Math.floor(totalSeconds / 60),
+    seconds: totalSeconds,
+  };
+}
+
 export function SceneOpening({ onBegin }: { onBegin: () => void }) {
   const [stage, setStage] = useState<Stage>("closed");
   const [code, setCode] = useState("");
   const [error, setError] = useState(false);
+  const elapsed = useElapsed(START_DATE);
+
+  // Lock page scroll until the box is opened and the code is entered.
+  useEffect(() => {
+    const locked = stage !== "unlocked";
+    document.body.style.overflow = locked ? "hidden" : "";
+    document.body.style.touchAction = locked ? "none" : "";
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.touchAction = "";
+    };
+  }, [stage]);
 
   const openBox = () => {
     setStage("opening");
@@ -198,10 +233,10 @@ export function SceneOpening({ onBegin }: { onBegin: () => void }) {
                 </p>
                 <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
                   {[
-                    { icon: "❤️", value: "428", label: "Days" },
-                    { icon: "⏰", value: "10,272", label: "Hours" },
-                    { icon: "⏱️", value: "616,320", label: "Minutes" },
-                    { icon: "✨", value: "36,979,200", label: "Seconds" },
+                    { icon: "❤️", value: elapsed.days.toLocaleString(), label: "Days" },
+                    { icon: "⏰", value: elapsed.hours.toLocaleString(), label: "Hours" },
+                    { icon: "⏱️", value: elapsed.minutes.toLocaleString(), label: "Minutes" },
+                    { icon: "✨", value: elapsed.seconds.toLocaleString(), label: "Seconds" },
                   ].map((item, i) => (
                     <motion.div
                       key={item.label}

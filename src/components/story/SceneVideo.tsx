@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { Fireflies } from "./Particles";
+import { TiltCard } from "./TiltCard";
 
 import videoMessage1 from "@/assets/video-message-1.mp4";
 import videoMessage2 from "@/assets/video-message-2.mp4";
@@ -52,58 +53,60 @@ export function SceneVideo() {
           transition={{ delay: 1, duration: 1 }}
           className="mx-auto mt-10 max-w-2xl"
         >
-          <div
-            className="relative rounded-[2rem] p-6 md:p-8"
-            style={{
-              background: "linear-gradient(180deg, #6b4a3a 0%, #3d271c 100%)",
-              boxShadow: "0 30px 60px -20px rgba(0,0,0,0.7), inset 0 0 20px rgba(0,0,0,0.5)",
-            }}
-          >
-            <div className="relative flex max-h-[70vh] items-center justify-center overflow-hidden rounded-2xl border-4 border-[#2a1710] bg-black">
-              <video
-                key={index}
-                src={VIDEOS[index]}
-                controls
-                playsInline
-                className="max-h-[70vh] w-full object-contain"
-              />
-            </div>
-            <div className="mt-4 flex items-center justify-between px-2">
-              <button
-                onClick={() => setIndex((i) => (i - 1 + VIDEOS.length) % VIDEOS.length)}
-                className="rounded-full bg-white/10 px-4 py-1.5 text-sm text-rose-100 transition hover:bg-white/20"
-              >
-                ‹ Prev
-              </button>
-              <div className="flex gap-1.5">
-                {VIDEOS.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setIndex(i)}
-                    aria-label={`Clip ${i + 1}`}
-                    className={`h-2 w-2 rounded-full transition ${
-                      i === index ? "bg-rose-300" : "bg-white/30"
-                    }`}
-                  />
-                ))}
+          <TiltCard max={5}>
+            <div
+              className="relative rounded-[2rem] p-6 md:p-8"
+              style={{
+                background: "linear-gradient(180deg, #6b4a3a 0%, #3d271c 100%)",
+                boxShadow: "0 30px 60px -20px rgba(0,0,0,0.7), inset 0 0 20px rgba(0,0,0,0.5)",
+              }}
+            >
+              <div className="relative flex max-h-[70vh] items-center justify-center overflow-hidden rounded-2xl border-4 border-[#2a1710] bg-black">
+                <video
+                  key={index}
+                  src={VIDEOS[index]}
+                  controls
+                  playsInline
+                  className="max-h-[70vh] w-full object-contain"
+                />
               </div>
-              <button
-                onClick={() => setIndex((i) => (i + 1) % VIDEOS.length)}
-                className="rounded-full bg-white/10 px-4 py-1.5 text-sm text-rose-100 transition hover:bg-white/20"
-              >
-                Next ›
-              </button>
-            </div>
-            <div className="mt-3 flex items-center justify-between px-2">
-              <div className="flex gap-1">
-                <span className="h-2 w-2 rounded-full bg-rose-400" />
-                <span className="h-2 w-2 rounded-full bg-amber-300" />
+              <div className="mt-4 flex items-center justify-between px-2">
+                <button
+                  onClick={() => setIndex((i) => (i - 1 + VIDEOS.length) % VIDEOS.length)}
+                  className="rounded-full bg-white/10 px-4 py-1.5 text-sm text-rose-100 transition hover:bg-white/20"
+                >
+                  ‹ Prev
+                </button>
+                <div className="flex gap-1.5">
+                  {VIDEOS.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setIndex(i)}
+                      aria-label={`Clip ${i + 1}`}
+                      className={`h-2 w-2 rounded-full transition ${
+                        i === index ? "bg-rose-300" : "bg-white/30"
+                      }`}
+                    />
+                  ))}
+                </div>
+                <button
+                  onClick={() => setIndex((i) => (i + 1) % VIDEOS.length)}
+                  className="rounded-full bg-white/10 px-4 py-1.5 text-sm text-rose-100 transition hover:bg-white/20"
+                >
+                  Next ›
+                </button>
               </div>
-              <span className="text-[10px] uppercase tracking-widest text-amber-200/60">
-                For Nanna · Clip {index + 1} of {VIDEOS.length}
-              </span>
+              <div className="mt-3 flex items-center justify-between px-2">
+                <div className="flex gap-1">
+                  <span className="h-2 w-2 rounded-full bg-rose-400" />
+                  <span className="h-2 w-2 rounded-full bg-amber-300" />
+                </div>
+                <span className="text-[10px] uppercase tracking-widest text-amber-200/60">
+                  For Nanna · Clip {index + 1} of {VIDEOS.length}
+                </span>
+              </div>
             </div>
-          </div>
+          </TiltCard>
         </motion.div>
 
         <motion.p

@@ -1,6 +1,9 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import { Particles } from "./Particles";
+import { TiltCard } from "./TiltCard";
+
+const GiftBox3D = lazy(() => import("./GiftBox3D").then((m) => ({ default: m.GiftBox3D })));
 
 import couplePhoto1 from "@/assets/couple-photo-1.png";
 import couplePhoto2 from "@/assets/couple-photo-2.png";
@@ -8,6 +11,13 @@ import couplePhoto3 from "@/assets/couple-photo-3.png";
 import couplePhoto4 from "@/assets/couple-photo-4.png";
 import couplePhoto5 from "@/assets/couple-photo-5.png";
 import couplePhotoFoggy from "@/assets/couple-photo-foggy-glass.png";
+
+import snapPhoto1 from "@/assets/Snapchat-1080355010.jpg.jpeg";
+import snapPhoto2 from "@/assets/Snapchat-2013860706.jpg.jpeg";
+import snapPhoto3 from "@/assets/Snapchat-731913443.jpg.jpeg";
+import snapPhoto4 from "@/assets/Snapchat-1128932825.jpg.jpeg";
+import snapPhoto5 from "@/assets/Snapchat-283743956.jpg.jpeg";
+import snapPhoto6 from "@/assets/Snapchat-1959254210.jpg.jpeg";
 
 import giftWireRing from "@/assets/gift-wire-heart-ring.png";
 import giftBanglesBlue from "@/assets/gift-bangles-blue.png";
@@ -27,11 +37,26 @@ import chatNote7 from "@/assets/chat-note-7.png";
 import videoMessage2 from "@/assets/video-message-2.mp4";
 import videoMessage3 from "@/assets/video-message-3.mp4";
 import videoMessage6 from "@/assets/video-message-6.mp4";
+import snapVideo1 from "@/assets/Snapchat-1685886726.mp4";
+import snapVideo2 from "@/assets/Snapchat-1898366520.mp4";
 
-const PHOTOS = [couplePhoto1, couplePhoto2, couplePhoto3, couplePhoto4, couplePhoto5, couplePhotoFoggy];
+const PHOTOS = [
+  couplePhoto1,
+  couplePhoto2,
+  couplePhoto3,
+  couplePhoto4,
+  couplePhoto5,
+  couplePhotoFoggy,
+  snapPhoto1,
+  snapPhoto2,
+  snapPhoto3,
+  snapPhoto4,
+  snapPhoto5,
+  snapPhoto6,
+];
 const GIFTS = [giftWireRing, giftBanglesBlue, giftBanglesGreen, giftBanglesYellow, giftHeartRingHand, giftTealBearJar];
 const CHATS = [chatNote1, chatNote2, chatNote3, chatNote4, chatNote5, chatNote6, chatNote7];
-const REELS = [videoMessage2, videoMessage3, videoMessage6];
+const REELS = [videoMessage2, videoMessage3, videoMessage6, snapVideo1, snapVideo2];
 
 const SONGS = [
   "https://open.spotify.com/track/61fXT6uwJ2THPkbmxa65OI?si=bc38d76d9a2a4337",
@@ -76,11 +101,6 @@ const BOXES: Box[] = [
   { id: "ch", icon: "💬", title: "Notes I Still Scroll Through", kind: "chats", ribbon: "#a35fc4", boxColor: "#f8f0ff" },
 ];
 
-const GOLD = "#d4af37";
-const GOLD_LIGHT = "#f4d97a";
-const BLUSH = "#f7a8c0";
-const BLUSH_DEEP = "#e5657e";
-
 function FloatingBits() {
   const bits = Array.from({ length: 40 }).map((_, i) => {
     const kinds = ["❤", "✨", "🌸", "🦋", "✦"];
@@ -123,168 +143,6 @@ function FloatingBits() {
   );
 }
 
-function PremiumGiftBox({ opened, onOpen }: { opened: boolean; onOpen: () => void }) {
-  return (
-    <div className="relative flex items-center justify-center" style={{ perspective: "1200px" }}>
-      {/* Glowing aura */}
-      <motion.div
-        animate={{ scale: [1, 1.08, 1], opacity: [0.6, 0.9, 0.6] }}
-        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute h-[380px] w-[380px] rounded-full"
-        style={{
-          background: `radial-gradient(circle, ${GOLD_LIGHT}55 0%, ${BLUSH}33 40%, transparent 70%)`,
-          filter: "blur(30px)",
-        }}
-      />
-
-      {/* Sparkles around box */}
-      {!opened &&
-        Array.from({ length: 14 }).map((_, i) => {
-          const angle = (i / 14) * Math.PI * 2;
-          const r = 170;
-          return (
-            <motion.span
-              key={i}
-              className="absolute text-yellow-200"
-              style={{
-                left: `calc(50% + ${Math.cos(angle) * r}px)`,
-                top: `calc(50% + ${Math.sin(angle) * r}px)`,
-                fontSize: 14 + Math.random() * 10,
-                filter: "drop-shadow(0 0 6px #f4d97a)",
-              }}
-              animate={{ opacity: [0.2, 1, 0.2], scale: [0.6, 1.2, 0.6] }}
-              transition={{ duration: 2 + Math.random() * 2, repeat: Infinity, delay: i * 0.15 }}
-            >
-              ✦
-            </motion.span>
-          );
-        })}
-
-      <div
-        className="relative h-72 w-72 md:h-80 md:w-80"
-        style={{ transformStyle: "preserve-3d", transform: "rotateX(12deg) rotateY(-18deg)" }}
-      >
-        {/* Inner glow when open */}
-        <AnimatePresence>
-          {opened && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.4 }}
-              animate={{ opacity: 1, scale: 1.6 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1.2 }}
-              className="absolute left-1/2 top-1/3 z-30 h-40 w-40 -translate-x-1/2 -translate-y-1/2 rounded-full"
-              style={{
-                background: `radial-gradient(circle, #fff2c8 0%, ${GOLD_LIGHT}cc 30%, ${BLUSH}44 60%, transparent 80%)`,
-                filter: "blur(10px)",
-              }}
-            />
-          )}
-        </AnimatePresence>
-
-        {/* Lid */}
-        <motion.div
-          animate={
-            opened
-              ? { rotateX: -125, y: -30, z: 40 }
-              : { rotateX: 0, y: 0, z: 0 }
-          }
-          transition={{ type: "spring", stiffness: 90, damping: 14, delay: opened ? 0.3 : 0 }}
-          className="absolute left-0 top-0 z-20 h-20 w-full origin-bottom rounded-xl"
-          style={{
-            background: `linear-gradient(145deg, #fff5f8 0%, #ffe0ec 50%, #ffc9dd 100%)`,
-            border: `3px solid ${GOLD}`,
-            transformStyle: "preserve-3d",
-            boxShadow: `0 20px 40px ${BLUSH_DEEP}44, inset 0 0 20px ${GOLD}33`,
-          }}
-        />
-
-        {/* Box body */}
-        <div
-          className="absolute bottom-0 left-0 h-60 w-full rounded-xl"
-          style={{
-            background: `linear-gradient(145deg, #ffd6e5 0%, #ffb8d1 50%, #ff9ec2 100%)`,
-            border: `3px solid ${GOLD}`,
-            borderTop: "none",
-            boxShadow: `0 30px 60px ${BLUSH_DEEP}55, inset 0 -20px 40px ${BLUSH_DEEP}22, inset 0 0 30px ${GOLD}22`,
-            transformStyle: "preserve-3d",
-          }}
-        >
-          {/* Vertical ribbon */}
-          <div
-            className="absolute inset-y-0 left-1/2 w-6 -translate-x-1/2"
-            style={{
-              background: `linear-gradient(90deg, ${BLUSH_DEEP} 0%, ${BLUSH} 50%, ${BLUSH_DEEP} 100%)`,
-              boxShadow: `0 0 15px ${BLUSH}88`,
-            }}
-          />
-          {/* Golden edge highlight */}
-          <div
-            className="pointer-events-none absolute inset-0 rounded-xl"
-            style={{
-              background: `linear-gradient(180deg, ${GOLD_LIGHT}44 0%, transparent 20%, transparent 80%, ${GOLD}33 100%)`,
-            }}
-          />
-        </div>
-
-        {/* Horizontal ribbon + bow (on lid area) */}
-        <AnimatePresence>
-          {!opened && (
-            <motion.button
-              onClick={onOpen}
-              exit={{ opacity: 0, scale: 0.4, rotate: 180 }}
-              transition={{ duration: 0.6 }}
-              whileHover={{ scale: 1.08 }}
-              className="absolute left-1/2 top-16 z-40 -translate-x-1/2 cursor-pointer"
-              aria-label="Untie the ribbon"
-            >
-              {/* Bow */}
-              <div className="relative flex items-center">
-                <motion.div
-                  animate={{ rotate: [-3, 3, -3] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                  className="h-10 w-14 rounded-full"
-                  style={{
-                    background: `radial-gradient(ellipse, ${BLUSH} 0%, ${BLUSH_DEEP} 100%)`,
-                    boxShadow: `0 4px 12px ${BLUSH_DEEP}66, inset 0 0 8px ${GOLD}66`,
-                    transform: "rotate(-25deg)",
-                  }}
-                />
-                <div
-                  className="h-6 w-6 rounded-full"
-                  style={{
-                    background: `radial-gradient(circle, ${GOLD_LIGHT}, ${GOLD})`,
-                    boxShadow: `0 0 12px ${GOLD_LIGHT}`,
-                  }}
-                />
-                <motion.div
-                  animate={{ rotate: [3, -3, 3] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                  className="h-10 w-14 rounded-full"
-                  style={{
-                    background: `radial-gradient(ellipse, ${BLUSH} 0%, ${BLUSH_DEEP} 100%)`,
-                    boxShadow: `0 4px 12px ${BLUSH_DEEP}66, inset 0 0 8px ${GOLD}66`,
-                    transform: "rotate(25deg)",
-                  }}
-                />
-              </div>
-            </motion.button>
-          )}
-        </AnimatePresence>
-      </div>
-
-      {!opened && (
-        <motion.div
-          animate={{ y: [0, -6, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="absolute -bottom-16 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-white/70 px-5 py-2 font-hand text-lg text-rose-700 shadow backdrop-blur"
-        >
-          Pull the ribbon ✨
-        </motion.div>
-      )}
-    </div>
-  );
-}
-
 export function SceneMemories() {
   const [open, setOpen] = useState<Box | null>(null);
   const [unwrapped, setUnwrapped] = useState(false);
@@ -321,8 +179,24 @@ export function SceneMemories() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 1.4, y: -60 }}
                 transition={{ duration: 0.7 }}
+                className="relative flex flex-col items-center"
               >
-                <PremiumGiftBox opened={false} onOpen={() => setUnwrapped(true)} />
+                <Suspense
+                  fallback={
+                    <div className="flex h-72 w-72 items-center justify-center font-hand text-lg text-rose-700 md:h-80 md:w-80">
+                      loading our little box... 🎁
+                    </div>
+                  }
+                >
+                  <GiftBox3D opened={false} onOpen={() => setUnwrapped(true)} />
+                </Suspense>
+                <motion.div
+                  animate={{ y: [0, -6, 0] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="mt-4 whitespace-nowrap rounded-full bg-white/70 px-5 py-2 font-hand text-lg text-rose-700 shadow backdrop-blur"
+                >
+                  Drag to look around, tap the box ✨
+                </motion.div>
               </motion.div>
             )}
           </AnimatePresence>
@@ -332,42 +206,47 @@ export function SceneMemories() {
           {unwrapped && (
             <div className="grid w-full grid-cols-2 place-items-center gap-6 md:grid-cols-4 lg:grid-cols-7">
               {BOXES.map((it, i) => (
-                <motion.button
+                <motion.div
                   key={it.id}
                   initial={{ opacity: 0, y: 80, scale: 0.5, rotate: -20 }}
                   animate={{ opacity: 1, y: 0, scale: 1, rotate: 0 }}
                   transition={{ delay: 0.2 + i * 0.15, type: "spring", stiffness: 120, damping: 14 }}
-                  whileHover={{ y: -8, scale: 1.05 }}
-                  onClick={() => setOpen(it)}
-                  className="group relative flex h-40 w-full max-w-[10rem] flex-col items-center justify-center rounded-2xl p-4 text-center shadow-xl backdrop-blur-md"
-                  style={{
-                    background: `linear-gradient(135deg, ${it.boxColor}ee 0%, #ffffff88 100%)`,
-                    border: `1.5px solid ${it.ribbon}55`,
-                    boxShadow: `0 10px 30px ${it.ribbon}33, inset 0 1px 0 #ffffff99`,
-                  }}
+                  className="h-40 w-full max-w-[10rem]"
                 >
-                  <div
-                    className="mb-2 flex h-14 w-14 items-center justify-center rounded-full text-3xl shadow-inner"
-                    style={{
-                      background: `radial-gradient(circle, #fff 0%, ${it.boxColor} 100%)`,
-                      border: `2px solid ${it.ribbon}66`,
-                    }}
-                  >
-                    {it.icon}
-                  </div>
-                  <p
-                    className="font-hand text-sm leading-tight"
-                    style={{ color: it.ribbon }}
-                  >
-                    {it.title}
-                  </p>
-                  <span
-                    className="absolute -top-2 right-2 rounded-full px-2 py-0.5 text-[10px] font-semibold text-white opacity-0 shadow transition-opacity group-hover:opacity-100"
-                    style={{ background: it.ribbon }}
-                  >
-                    open ♡
-                  </span>
-                </motion.button>
+                  <TiltCard className="h-full w-full" max={12}>
+                    <button
+                      onClick={() => setOpen(it)}
+                      className="group relative flex h-full w-full flex-col items-center justify-center rounded-2xl p-4 text-center shadow-xl backdrop-blur-md"
+                      style={{
+                        background: `linear-gradient(135deg, ${it.boxColor}ee 0%, #ffffff88 100%)`,
+                        border: `1.5px solid ${it.ribbon}55`,
+                        boxShadow: `0 10px 30px ${it.ribbon}33, inset 0 1px 0 #ffffff99`,
+                      }}
+                    >
+                      <div
+                        className="mb-2 flex h-14 w-14 items-center justify-center rounded-full text-3xl shadow-inner"
+                        style={{
+                          background: `radial-gradient(circle, #fff 0%, ${it.boxColor} 100%)`,
+                          border: `2px solid ${it.ribbon}66`,
+                        }}
+                      >
+                        {it.icon}
+                      </div>
+                      <p
+                        className="font-hand text-sm leading-tight"
+                        style={{ color: it.ribbon }}
+                      >
+                        {it.title}
+                      </p>
+                      <span
+                        className="absolute -top-2 right-2 rounded-full px-2 py-0.5 text-[10px] font-semibold text-white opacity-0 shadow transition-opacity group-hover:opacity-100"
+                        style={{ background: it.ribbon }}
+                      >
+                        open ♡
+                      </span>
+                    </button>
+                  </TiltCard>
+                </motion.div>
               ))}
             </div>
           )}

@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Babu, Dudu, HeartBurst } from "./Characters";
 import { Particles } from "./Particles";
+import { TiltCard } from "./TiltCard";
 import handshakeBanner from "@/assets/mascot-handshake-banner.png";
 
 export function SceneHands({ onNext }: { onNext: () => void }) {
@@ -15,16 +16,6 @@ export function SceneHands({ onNext }: { onNext: () => void }) {
       />
       <Particles count={18} kinds={["heart", "petal", "sparkle"]} tint="text-rose-400" />
 
-      <motion.p
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1.2 }}
-        className="relative z-10 mb-8 max-w-md px-6 text-center font-hand text-2xl text-rose-700"
-      >
-        The screen is quiet. On one side stands Dudu 🐰. On the other stands
-        Babu 🐻. For a moment... they simply look at each other.
-      </motion.p>
       <div className="relative z-10 flex w-full max-w-5xl items-end justify-center gap-2 px-6 md:gap-0">
         <motion.div
           initial={{ x: -120, opacity: 0 }}
@@ -67,16 +58,22 @@ export function SceneHands({ onNext }: { onNext: () => void }) {
         Two hearts, one path.
       </motion.p>
 
-      <motion.img
-        src={handshakeBanner}
-        alt="Take my hand"
+      <motion.div
         initial={{ opacity: 0, scale: 0.85 }}
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
         transition={{ delay: 2.3, duration: 0.9 }}
-        onClick={onNext}
-        className="relative z-10 mt-8 w-48 cursor-pointer drop-shadow-xl transition hover:scale-105 md:w-56"
-      />
+        className="relative z-10 mt-8 w-48 md:w-56"
+      >
+        <TiltCard max={12}>
+          <img
+            src={handshakeBanner}
+            alt="Take my hand"
+            onClick={onNext}
+            className="w-full cursor-pointer drop-shadow-xl"
+          />
+        </TiltCard>
+      </motion.div>
 
       <motion.button
         initial={{ opacity: 0, y: 20 }}

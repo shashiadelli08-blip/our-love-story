@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Babu, Dudu, HeartBurst } from "./Characters";
 import { Particles, StarField } from "./Particles";
+import { TiltCard } from "./TiltCard";
 
 export function SceneFinale() {
   const [showFade, setShowFade] = useState(false);
@@ -149,28 +150,34 @@ export function SceneFinale() {
           initial={{ opacity: 0 }}
           animate={showFade ? { opacity: 1 } : {}}
           transition={{ duration: 2 }}
-          className="relative mt-16 h-40 overflow-hidden rounded-3xl"
-          style={{
-            background: "linear-gradient(180deg, #ffb98a 0%, #ff8a72 50%, #f76a75 100%)",
-          }}
+          className="mt-16"
         >
-          <motion.div
-            initial={{ x: "-10%" }}
-            animate={showFade ? { x: "60%" } : {}}
-            transition={{ duration: 6, ease: "easeInOut" }}
-            className="absolute bottom-0 flex items-end gap-1"
-          >
-            <Dudu className="w-16" />
-            <Babu className="-ml-2 w-16 -scale-x-100" />
-          </motion.div>
-          <div
-            className="absolute right-4 top-4 h-16 w-16 rounded-full"
-            style={{
-              background:
-                "radial-gradient(circle, #fff2b0 0%, #ffb96a 60%, transparent 80%)",
-              boxShadow: "0 0 60px rgba(255, 200, 100, 0.9)",
-            }}
-          />
+          <TiltCard className="h-40 w-full" max={6}>
+            <div
+              className="relative h-full w-full overflow-hidden rounded-3xl"
+              style={{
+                background: "linear-gradient(180deg, #ffb98a 0%, #ff8a72 50%, #f76a75 100%)",
+              }}
+            >
+              <motion.div
+                initial={{ x: "-10%" }}
+                animate={showFade ? { x: "60%" } : {}}
+                transition={{ duration: 6, ease: "easeInOut" }}
+                className="absolute bottom-0 flex items-end gap-1"
+              >
+                <Dudu className="w-16" />
+                <Babu className="-ml-2 w-16 -scale-x-100" />
+              </motion.div>
+              <div
+                className="absolute right-4 top-4 h-16 w-16 rounded-full"
+                style={{
+                  background:
+                    "radial-gradient(circle, #fff2b0 0%, #ffb96a 60%, transparent 80%)",
+                  boxShadow: "0 0 60px rgba(255, 200, 100, 0.9)",
+                }}
+              />
+            </div>
+          </TiltCard>
         </motion.div>
 
         <motion.div

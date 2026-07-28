@@ -158,6 +158,29 @@
     overflow-x: hidden;
   }
 
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #e5657e99 transparent;
+  }
+
+  *::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #f7a8c0 0%, #e5657e 100%);
+    border-radius: 999px;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #e5657e 0%, #c4507a 100%);
+  }
+
   h1, h2, h3, .font-display {
     font-family: "Cormorant Garamond", "Playfair Display", ui-serif, serif;
     letter-spacing: 0.01em;
