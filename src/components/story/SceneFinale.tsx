@@ -43,7 +43,7 @@ export function SceneFinale() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="font-display text-5xl md:text-7xl text-glow"
+          className="font-display text-3xl sm:text-4xl md:text-7xl text-glow"
         >
           ❤️ Happy Birthday, My Nanna ❤️
         </motion.h2>

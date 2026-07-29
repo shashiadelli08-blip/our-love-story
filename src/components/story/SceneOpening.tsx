@@ -209,7 +209,7 @@ export function SceneOpening({ onBegin }: { onBegin: () => void }) {
                 initial={{ opacity: 0, scale: 0.7 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.7, duration: 1.2 }}
-                className="font-display text-6xl font-semibold text-glow md:text-8xl"
+                className="font-display text-4xl font-semibold text-glow sm:text-5xl md:text-7xl lg:text-8xl"
               >
                 ❤️ NANNA ❤️
               </motion.h1>
@@ -217,7 +217,7 @@ export function SceneOpening({ onBegin }: { onBegin: () => void }) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.4, duration: 1 }}
-                className="mt-6 font-display text-2xl text-rose-50/90 md:text-4xl"
+                className="mt-6 font-display text-xl text-rose-50/90 sm:text-2xl md:text-4xl"
               >
                 Happy Birthday, My Love
               </motion.p>
@@ -226,12 +226,12 @@ export function SceneOpening({ onBegin }: { onBegin: () => void }) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.8, duration: 1 }}
-                className="mt-8 rounded-2xl border border-rose-200/20 bg-white/5 px-6 py-5 backdrop-blur-md"
+                className="mt-8 w-full max-w-md rounded-2xl border border-rose-200/20 bg-white/5 px-4 py-5 backdrop-blur-md sm:px-6"
               >
                 <p className="mb-4 font-hand text-lg text-rose-100/80">
                   It's been...
                 </p>
-                <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+                <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4 md:gap-6">
                   {[
                     { icon: "❤️", value: elapsed.days.toLocaleString(), label: "Days" },
                     { icon: "⏰", value: elapsed.hours.toLocaleString(), label: "Hours" },
@@ -243,10 +243,10 @@ export function SceneOpening({ onBegin }: { onBegin: () => void }) {
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: 2 + i * 0.15, duration: 0.6 }}
-                      className="flex flex-col items-center"
+                      className="flex flex-col items-center overflow-hidden"
                     >
                       <span className="text-2xl">{item.icon}</span>
-                      <span className="font-display text-2xl font-semibold text-rose-50 md:text-3xl">
+                      <span className="font-display text-base font-semibold text-rose-50 sm:text-xl md:text-3xl">
                         {item.value}
                       </span>
                       <span className="font-hand text-sm text-rose-100/60">

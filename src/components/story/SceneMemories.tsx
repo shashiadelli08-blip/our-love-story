@@ -193,7 +193,7 @@ export function SceneMemories() {
                 <motion.div
                   animate={{ y: [0, -6, 0] }}
                   transition={{ duration: 2, repeat: Infinity }}
-                  className="mt-4 whitespace-nowrap rounded-full bg-white/70 px-5 py-2 font-hand text-lg text-rose-700 shadow backdrop-blur"
+                  className="mt-4 max-w-[16rem] rounded-full bg-white/70 px-5 py-2 text-center font-hand text-base text-rose-700 shadow backdrop-blur sm:max-w-none sm:whitespace-nowrap sm:text-lg"
                 >
                   Drag to look around, tap the box ✨
                 </motion.div>
@@ -268,7 +268,7 @@ export function SceneMemories() {
               exit={{ scale: 0.95, opacity: 0 }}
               transition={{ type: "spring", stiffness: 140, damping: 16 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative max-h-[85vh] w-full max-w-2xl overflow-y-auto rounded-3xl glass-card p-8 text-center"
+              className="relative max-h-[85vh] w-full max-w-2xl overflow-y-auto rounded-3xl glass-card p-5 text-center sm:p-8"
             >
               <div
                 className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full text-3xl shadow-md"
@@ -276,7 +276,7 @@ export function SceneMemories() {
               >
                 {open.icon}
               </div>
-              <h3 className="font-display text-3xl text-rose-900">{open.title}</h3>
+              <h3 className="font-display text-2xl text-rose-900 sm:text-3xl">{open.title}</h3>
 
               {open.kind === "photos" && (
                 <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">

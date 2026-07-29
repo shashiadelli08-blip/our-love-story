@@ -171,13 +171,13 @@ export function SceneMap() {
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0 }}
               onClick={(event) => event.stopPropagation()}
-              className="relative w-full max-w-lg overflow-hidden rounded-3xl glass-card p-8 text-center"
+              className="relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-3xl glass-card p-5 text-center sm:p-8"
             >
               <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-rose text-3xl">
                 {active.emoji}
               </div>
               <p className="font-hand text-xl text-rose-700">Memory {STOPS.findIndex((stop) => stop.id === active.id) + 1}</p>
-              <h3 className="mt-1 font-display text-3xl text-rose-900">{active.title}</h3>
+              <h3 className="mt-1 font-display text-2xl text-rose-900 sm:text-3xl">{active.title}</h3>
               <p className="mt-2 font-medium text-rose-800">{active.name}</p>
               <p className="mt-4 max-h-[45vh] overflow-y-auto whitespace-pre-line text-left text-base leading-relaxed text-rose-950/80">
                 {active.memory}

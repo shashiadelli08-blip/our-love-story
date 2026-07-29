@@ -16,13 +16,13 @@ export function SceneHands({ onNext }: { onNext: () => void }) {
       />
       <Particles count={18} kinds={["heart", "petal", "sparkle"]} tint="text-rose-400" />
 
-      <div className="relative z-10 flex w-full max-w-5xl items-end justify-center gap-2 px-6 md:gap-0">
+      <div className="relative z-10 flex w-full max-w-5xl items-end justify-center gap-1 px-4 sm:gap-2 sm:px-6 md:gap-0">
         <motion.div
           initial={{ x: -120, opacity: 0 }}
           whileInView={{ x: 0, opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1.4, ease: "easeOut" }}
-          className="w-28 md:w-40"
+          className="w-20 sm:w-28 md:w-40"
         >
           <Dudu className="drop-shadow-xl" />
         </motion.div>
@@ -32,9 +32,9 @@ export function SceneHands({ onNext }: { onNext: () => void }) {
           whileInView={{ scale: 1, opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 1.5, duration: 0.8, type: "spring" }}
-          className="mb-24 flex flex-col items-center"
+          className="mb-16 flex flex-col items-center sm:mb-24"
         >
-          <HeartBurst className="h-14 w-14 animate-floaty" />
+          <HeartBurst className="h-10 w-10 animate-floaty sm:h-14 sm:w-14" />
         </motion.div>
 
         <motion.div
@@ -42,7 +42,7 @@ export function SceneHands({ onNext }: { onNext: () => void }) {
           whileInView={{ x: 0, opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1.4, ease: "easeOut" }}
-          className="w-28 md:w-40"
+          className="w-20 sm:w-28 md:w-40"
         >
           <Babu className="drop-shadow-xl -scale-x-100" />
         </motion.div>

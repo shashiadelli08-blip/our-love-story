@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { Music2, Volume2 } from "lucide-react";
+// "Clair de Lune" (Debussy) — CC BY 3.0, via Wikimedia Commons.
+// Bundled locally since the previous CDN link (pixabay) returned 403s in practice.
+import trackUrl from "@/assets/background-music.mp3";
 
-const TRACK_URL =
-  "https://cdn.pixabay.com/download/audio/2022/10/25/audio_946bc6bf50.mp3?filename=romantic-piano-116364.mp3";
+const VOLUME = 0.5;
 
 export function MusicPlayer() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [playing, setPlaying] = useState(false);
-  const [volume, setVolume] = useState(0.5);
 
   useEffect(() => {
     const a = audioRef.current;
@@ -39,7 +40,7 @@ export function MusicPlayer() {
       a.volume = 0;
       a.play()
         .then(() => {
-          const target = volume;
+          const target = VOLUME;
           const steps = 24;
           let i = 0;
           const id = setInterval(() => {
@@ -53,14 +54,9 @@ export function MusicPlayer() {
     }
   };
 
-  const onVolume = (v: number) => {
-    setVolume(v);
-    if (audioRef.current && playing) audioRef.current.volume = v;
-  };
-
   return (
     <div className="fixed bottom-5 right-5 z-50 flex items-center gap-3 rounded-full glass-card px-4 py-2.5 shadow-lg">
-      <audio ref={audioRef} src={TRACK_URL} preload="auto" />
+      <audio ref={audioRef} src={trackUrl} preload="auto" loop />
       <button
         onClick={toggle}
         aria-label={playing ? "Pause music" : "Play music"}
@@ -68,16 +64,6 @@ export function MusicPlayer() {
       >
         {playing ? <Volume2 size={16} /> : <Music2 size={16} />}
       </button>
-      <input
-        type="range"
-        min={0}
-        max={1}
-        step={0.01}
-        value={volume}
-        onChange={(e) => onVolume(parseFloat(e.target.value))}
-        aria-label="Volume"
-        className="w-20 accent-[color:var(--rose)]"
-      />
       {!playing && (
         <span className="hidden text-xs text-muted-foreground sm:inline">
           Tap for music ♪

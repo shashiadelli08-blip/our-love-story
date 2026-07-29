@@ -145,12 +145,12 @@ export function GiftBox3D({ opened, onOpen }: { opened: boolean; onOpen: () => v
   };
 
   if (!mounted) {
-    return <div className="h-72 w-72 md:h-80 md:w-80" aria-hidden />;
+    return <div className="h-56 w-56 sm:h-72 sm:w-72 md:h-80 md:w-80" aria-hidden />;
   }
 
   return (
     <div
-      className="h-72 w-72 cursor-grab touch-none active:cursor-grabbing md:h-80 md:w-80"
+      className="h-56 w-56 cursor-grab touch-none active:cursor-grabbing sm:h-72 sm:w-72 md:h-80 md:w-80"
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
