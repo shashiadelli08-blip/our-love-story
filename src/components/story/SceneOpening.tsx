@@ -88,8 +88,8 @@ export function SceneOpening({ onBegin }: { onBegin: () => void }) {
 
   return (
     <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-night text-white">
-      <StarField count={140} />
-      <Particles count={16} kinds={["heart", "sparkle"]} tint="text-rose-200" />
+      <StarField count={70} />
+      <Particles count={10} kinds={["heart", "sparkle"]} tint="text-rose-200" />
 
       {/* Moon */}
       <motion.div
@@ -209,9 +209,11 @@ export function SceneOpening({ onBegin }: { onBegin: () => void }) {
                 initial={{ opacity: 0, scale: 0.7 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.7, duration: 1.2 }}
-                className="font-display text-4xl font-semibold text-glow sm:text-5xl md:text-7xl lg:text-8xl"
+                className="flex items-center justify-center gap-3 font-display text-4xl font-semibold text-glow sm:text-5xl md:text-7xl lg:text-8xl"
               >
-                ❤️ NANNA ❤️
+                <span>❤️</span>
+                <span>NANNA</span>
+                <span>❤️</span>
               </motion.h1>
               <motion.p
                 initial={{ opacity: 0, y: 20 }}

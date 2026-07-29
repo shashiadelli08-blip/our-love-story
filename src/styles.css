@@ -191,6 +191,11 @@
   }
 }
 
+@utility cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+
 @utility glass-card {
   background: color-mix(in oklab, white 55%, transparent);
   backdrop-filter: blur(18px) saturate(140%);

@@ -6,7 +6,6 @@ import { SceneHands } from "@/components/story/SceneHands";
 import { SceneMap } from "@/components/story/SceneMap";
 import { SceneLetter } from "@/components/story/SceneLetter";
 import { SceneMemories } from "@/components/story/SceneMemories";
-import { SceneVideo } from "@/components/story/SceneVideo";
 import { SceneWishes } from "@/components/story/SceneWishes";
 import { SceneFinale } from "@/components/story/SceneFinale";
 
@@ -54,7 +53,6 @@ function Index() {
 
       <SceneLetter />
       <SceneMemories />
-      <SceneVideo />
       <SceneWishes />
       <SceneFinale />
     </main>

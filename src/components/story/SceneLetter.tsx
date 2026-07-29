@@ -44,7 +44,7 @@ export function SceneLetter() {
   const [open, setOpen] = useState(false);
 
   return (
-    <section className="relative flex min-h-screen items-center justify-center overflow-hidden py-24">
+    <section className="relative flex min-h-screen items-center justify-center overflow-hidden py-10 cv-auto">
       <div
         className="absolute inset-0"
         style={{
@@ -52,7 +52,7 @@ export function SceneLetter() {
             "radial-gradient(ellipse at top, #fff0e6 0%, #f7d4c8 60%, #e5a99a 100%)",
         }}
       />
-      <Particles count={20} kinds={["petal", "heart"]} tint="text-rose-400" />
+      <Particles count={12} kinds={["petal", "heart"]} tint="text-rose-400" />
 
       <div className="relative z-10 mx-auto w-full max-w-2xl px-6">
         <motion.h2

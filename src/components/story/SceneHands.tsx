@@ -6,7 +6,7 @@ import handshakeBanner from "@/assets/mascot-handshake-banner.png";
 
 export function SceneHands({ onNext }: { onNext: () => void }) {
   return (
-    <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden">
+    <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden cv-auto">
       <div
         className="absolute inset-0"
         style={{
@@ -14,7 +14,7 @@ export function SceneHands({ onNext }: { onNext: () => void }) {
             "linear-gradient(180deg, #fff4ec 0%, #ffe6ea 55%, #fbd6df 100%)",
         }}
       />
-      <Particles count={18} kinds={["heart", "petal", "sparkle"]} tint="text-rose-400" />
+      <Particles count={12} kinds={["heart", "petal", "sparkle"]} tint="text-rose-400" />
 
       <div className="relative z-10 flex w-full max-w-5xl items-end justify-center gap-1 px-4 sm:gap-2 sm:px-6 md:gap-0">
         <motion.div

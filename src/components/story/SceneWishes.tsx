@@ -12,9 +12,9 @@ const WISHES = [
 
 export function SceneWishes() {
   return (
-    <section className="relative min-h-screen overflow-hidden bg-night py-24">
-      <StarField count={100} />
-      <Fireflies count={16} />
+    <section className="relative min-h-screen overflow-hidden bg-night py-10 cv-auto">
+      <StarField count={60} />
+      <Fireflies count={10} />
       <div
         className="absolute left-1/2 top-16 h-28 w-28 -translate-x-1/2 rounded-full animate-shimmer"
         style={{
@@ -29,7 +29,7 @@ export function SceneWishes() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mt-24 font-display text-4xl md:text-5xl text-glow"
+          className="mt-16 font-display text-4xl md:text-5xl text-glow"
         >
           What My Heart Still Wishes
         </motion.h2>

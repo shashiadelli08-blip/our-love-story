@@ -1,8 +1,62 @@
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Babu, Dudu, HeartBurst } from "./Characters";
 import { Particles, StarField } from "./Particles";
 import { TiltCard } from "./TiltCard";
+
+function SunsetBoxSparkle() {
+  const stars = useMemo(
+    () =>
+      Array.from({ length: 10 }).map((_, i) => ({
+        i,
+        left: 5 + Math.random() * 90,
+        top: 8 + Math.random() * 45,
+        delay: Math.random() * 3,
+        duration: 2 + Math.random() * 2,
+        size: 6 + Math.random() * 6,
+      })),
+    [],
+  );
+  const hearts = useMemo(
+    () =>
+      Array.from({ length: 6 }).map((_, i) => ({
+        i,
+        left: 15 + Math.random() * 70,
+        delay: Math.random() * 4,
+        duration: 4 + Math.random() * 2,
+        size: 10 + Math.random() * 10,
+      })),
+    [],
+  );
+
+  return (
+    <div className="pointer-events-none absolute inset-0" aria-hidden>
+      {stars.map((s) => (
+        <motion.span
+          key={`star-${s.i}`}
+          className="absolute text-amber-100"
+          style={{ left: `${s.left}%`, top: `${s.top}%`, fontSize: `${s.size}px` }}
+          animate={{ opacity: [0.2, 1, 0.2], scale: [0.8, 1.2, 0.8] }}
+          transition={{ duration: s.duration, delay: s.delay, repeat: Infinity }}
+        >
+          ✦
+        </motion.span>
+      ))}
+      {hearts.map((h) => (
+        <motion.span
+          key={`heart-${h.i}`}
+          className="absolute bottom-2 text-rose-100"
+          style={{ left: `${h.left}%`, fontSize: `${h.size}px` }}
+          initial={{ y: 0, opacity: 0 }}
+          animate={{ y: -90, opacity: [0, 1, 1, 0] }}
+          transition={{ duration: h.duration, delay: h.delay, repeat: Infinity, ease: "easeOut" }}
+        >
+          ❤
+        </motion.span>
+      ))}
+    </div>
+  );
+}
 
 export function SceneFinale() {
   const [showFade, setShowFade] = useState(false);
@@ -18,9 +72,9 @@ export function SceneFinale() {
   }, []);
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-night py-24">
-      <StarField count={150} />
-      <Particles count={30} kinds={["heart", "sparkle", "star"]} tint="text-rose-200" />
+    <section className="relative min-h-screen overflow-hidden bg-night py-10 cv-auto">
+      <StarField count={70} />
+      <Particles count={16} kinds={["heart", "sparkle", "star"]} tint="text-rose-200" />
 
       {Array.from({ length: 10 }).map((_, i) => (
         <motion.span
@@ -159,6 +213,7 @@ export function SceneFinale() {
                 background: "linear-gradient(180deg, #ffb98a 0%, #ff8a72 50%, #f76a75 100%)",
               }}
             >
+              <SunsetBoxSparkle />
               <motion.div
                 initial={{ x: "-10%" }}
                 animate={showFade ? { x: "60%" } : {}}

@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { Fireflies } from "./Particles";
 import { TiltCard } from "./TiltCard";
@@ -21,37 +21,54 @@ const VIDEOS = [
   videoMessage7,
 ];
 
-export function SceneVideo() {
+export function SceneVideo({ onClose }: { onClose: () => void }) {
   const [index, setIndex] = useState(0);
 
   return (
-    <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-night py-24">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-night/98 px-4 py-10"
+      onClick={onClose}
+    >
       <Fireflies count={20} />
-      <div className="relative z-10 mx-auto w-full max-w-3xl px-6 text-center text-white">
+      <button
+        onClick={onClose}
+        aria-label="Close"
+        className="fixed right-5 top-5 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-xl text-rose-100 backdrop-blur transition hover:bg-white/20"
+      >
+        ✕
+      </button>
+
+      <motion.div
+        initial={{ scale: 0.9, y: 30 }}
+        animate={{ scale: 1, y: 0 }}
+        exit={{ scale: 0.95, opacity: 0 }}
+        onClick={(e) => e.stopPropagation()}
+        className="relative z-10 mx-auto w-full max-w-3xl text-center text-white"
+      >
         <motion.p
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="font-hand text-3xl text-rose-100"
+          animate={{ opacity: 1, y: 0 }}
+          className="font-hand text-2xl text-rose-100 sm:text-3xl"
         >
           I couldn't fit everything into words...
         </motion.p>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.6 }}
-          className="mt-2 font-hand text-3xl text-rose-100"
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="mt-2 font-hand text-2xl text-rose-100 sm:text-3xl"
         >
           So I recorded this for you.
         </motion.p>
 
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 1, duration: 1 }}
-          className="mx-auto mt-10 max-w-2xl"
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.5, duration: 0.8 }}
+          className="mx-auto mt-8 max-w-2xl"
         >
           <TiltCard max={5}>
             <div
@@ -61,13 +78,14 @@ export function SceneVideo() {
                 boxShadow: "0 30px 60px -20px rgba(0,0,0,0.7), inset 0 0 20px rgba(0,0,0,0.5)",
               }}
             >
-              <div className="relative flex max-h-[70vh] items-center justify-center overflow-hidden rounded-2xl border-4 border-[#2a1710] bg-black">
+              <div className="relative flex max-h-[60vh] items-center justify-center overflow-hidden rounded-2xl border-4 border-[#2a1710] bg-black">
                 <video
                   key={index}
                   src={VIDEOS[index]}
                   controls
                   playsInline
-                  className="max-h-[70vh] w-full object-contain"
+                  preload="metadata"
+                  className="max-h-[60vh] w-full object-contain"
                 />
               </div>
               <div className="mt-4 flex items-center justify-between px-2">
@@ -77,7 +95,7 @@ export function SceneVideo() {
                 >
                   ‹ Prev
                 </button>
-                <div className="flex gap-1.5">
+                <div className="flex flex-wrap justify-center gap-1.5">
                   {VIDEOS.map((_, i) => (
                     <button
                       key={i}
@@ -111,14 +129,13 @@ export function SceneVideo() {
 
         <motion.p
           initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 1.4 }}
-          className="mt-8 font-hand text-xl text-rose-200/90"
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.9 }}
+          className="mt-8 font-hand text-lg text-rose-200/90 sm:text-xl"
         >
           No scripts. No filters. No pretending. Just me. Just my heart. Speaking to yours. ❤️
         </motion.p>
-      </div>
-    </section>
+      </motion.div>
+    </motion.div>
   );
 }

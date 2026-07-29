@@ -91,7 +91,7 @@ export function SceneMap() {
   const [active, setActive] = useState<Stop | null>(null);
 
   return (
-    <section className="relative min-h-screen overflow-hidden py-24">
+    <section className="relative min-h-screen overflow-hidden py-10 cv-auto">
       <div
         className="absolute inset-0"
         style={{
@@ -99,7 +99,7 @@ export function SceneMap() {
             "radial-gradient(ellipse at top, #ffeef1 0%, #fbd3dc 55%, #f4b6c4 100%)",
         }}
       />
-      <Particles count={20} kinds={["heart", "sparkle"]} tint="text-rose-400/70" />
+      <Particles count={12} kinds={["heart", "sparkle"]} tint="text-rose-400/70" />
 
       <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
         <motion.h2
@@ -123,6 +123,8 @@ export function SceneMap() {
               alt="Our relationship journey map with all our favorite places"
               className="absolute inset-0 h-full w-full object-cover"
               draggable={false}
+              loading="lazy"
+              decoding="async"
             />
 
             {STOPS.map((stop, idx) => (

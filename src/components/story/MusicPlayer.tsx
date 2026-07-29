@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Music2, Volume2 } from "lucide-react";
-// "Clair de Lune" (Debussy) — CC BY 3.0, via Wikimedia Commons.
+// Chopin — Nocturne No. 2 in E-flat Major, Op. 9 — public domain (CC0), via Wikimedia Commons/Musopen.
 // Bundled locally since the previous CDN link (pixabay) returned 403s in practice.
 import trackUrl from "@/assets/background-music.mp3";
 
@@ -9,15 +9,6 @@ const VOLUME = 0.5;
 export function MusicPlayer() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [playing, setPlaying] = useState(false);
-
-  useEffect(() => {
-    const a = audioRef.current;
-    if (!a) return;
-    a.volume = 0;
-    a.loop = true;
-    a.muted = true;
-    a.play().catch(() => {});
-  }, []);
 
   const toggle = () => {
     const a = audioRef.current;
@@ -36,7 +27,6 @@ export function MusicPlayer() {
       }, 40);
       setPlaying(false);
     } else {
-      a.muted = false;
       a.volume = 0;
       a.play()
         .then(() => {
@@ -56,7 +46,7 @@ export function MusicPlayer() {
 
   return (
     <div className="fixed bottom-5 right-5 z-50 flex items-center gap-3 rounded-full glass-card px-4 py-2.5 shadow-lg">
-      <audio ref={audioRef} src={trackUrl} preload="auto" loop />
+      <audio ref={audioRef} src={trackUrl} preload="none" loop />
       <button
         onClick={toggle}
         aria-label={playing ? "Pause music" : "Play music"}

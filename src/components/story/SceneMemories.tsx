@@ -1,9 +1,11 @@
-import { motion, AnimatePresence } from "framer-motion";
-import { lazy, Suspense, useState } from "react";
+import { motion, AnimatePresence, useInView } from "framer-motion";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { Particles } from "./Particles";
 import { TiltCard } from "./TiltCard";
+import { SceneVideo } from "./SceneVideo";
 
 const GiftBox3D = lazy(() => import("./GiftBox3D").then((m) => ({ default: m.GiftBox3D })));
+const VIDEO_SECRET = "143";
 
 import couplePhoto1 from "@/assets/couple-photo-1.png";
 import couplePhoto2 from "@/assets/couple-photo-2.png";
@@ -36,6 +38,8 @@ import chatNote7 from "@/assets/chat-note-7.png";
 
 import videoMessage2 from "@/assets/video-message-2.mp4";
 import videoMessage3 from "@/assets/video-message-3.mp4";
+import videoMessage4 from "@/assets/video-message-4.mp4";
+import videoMessage5 from "@/assets/video-message-5.mp4";
 import videoMessage6 from "@/assets/video-message-6.mp4";
 import snapVideo1 from "@/assets/Snapchat-1685886726.mp4";
 import snapVideo2 from "@/assets/Snapchat-1898366520.mp4";
@@ -56,9 +60,10 @@ const PHOTOS = [
 ];
 const GIFTS = [giftWireRing, giftBanglesBlue, giftBanglesGreen, giftBanglesYellow, giftHeartRingHand, giftTealBearJar];
 const CHATS = [chatNote1, chatNote2, chatNote3, chatNote4, chatNote5, chatNote6, chatNote7];
-const REELS = [videoMessage2, videoMessage3, videoMessage6, snapVideo1, snapVideo2];
+const REELS = [videoMessage2, videoMessage3, videoMessage4, videoMessage5, videoMessage6, snapVideo1, snapVideo2];
 
 const SONGS = [
+  "https://open.spotify.com/track/55D51BtkNPZ5BdLORc5rSm", // Kesariya — Arijit Singh
   "https://open.spotify.com/track/61fXT6uwJ2THPkbmxa65OI?si=bc38d76d9a2a4337",
   "https://open.spotify.com/track/3JncIz6FsQSQpwQRfuD2X6?si=8ffdf88000174562",
   "https://open.spotify.com/track/7qi2RGLDPwx2aXfknysYLw?si=e2df63cf52c64cc6",
@@ -143,12 +148,44 @@ function FloatingBits() {
   );
 }
 
+type VideoStage = "locked" | "pin" | "unlocked";
+
 export function SceneMemories() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const nearby = useInView(sectionRef, { once: true, margin: "400px 0px" });
   const [open, setOpen] = useState<Box | null>(null);
   const [unwrapped, setUnwrapped] = useState(false);
+  const [videoStage, setVideoStage] = useState<VideoStage>("locked");
+  const [videoOpen, setVideoOpen] = useState(false);
+  const [videoCode, setVideoCode] = useState("");
+  const [videoError, setVideoError] = useState(false);
+
+  const pressVideoCode = (n: string) => {
+    setVideoError(false);
+    if (n === "⌫") {
+      setVideoCode((c) => c.slice(0, -1));
+      return;
+    }
+    if (videoCode.length < 3) setVideoCode((c) => c + n);
+  };
+
+  useEffect(() => {
+    if (videoStage === "pin" && videoCode.length === 3) {
+      const t = setTimeout(() => {
+        if (videoCode === VIDEO_SECRET) {
+          setVideoStage("unlocked");
+          setVideoOpen(true);
+        } else {
+          setVideoError(true);
+          setTimeout(() => setVideoCode(""), 500);
+        }
+      }, 200);
+      return () => clearTimeout(t);
+    }
+  }, [videoCode, videoStage]);
 
   return (
-    <section className="relative min-h-screen overflow-hidden py-24">
+    <section ref={sectionRef} className="relative min-h-screen overflow-hidden py-10 cv-auto">
       <div
         className="absolute inset-0"
         style={{
@@ -181,15 +218,21 @@ export function SceneMemories() {
                 transition={{ duration: 0.7 }}
                 className="relative flex flex-col items-center"
               >
-                <Suspense
-                  fallback={
-                    <div className="flex h-72 w-72 items-center justify-center font-hand text-lg text-rose-700 md:h-80 md:w-80">
-                      loading our little box... 🎁
-                    </div>
-                  }
-                >
-                  <GiftBox3D opened={false} onOpen={() => setUnwrapped(true)} />
-                </Suspense>
+                {nearby ? (
+                  <Suspense
+                    fallback={
+                      <div className="flex h-56 w-56 items-center justify-center font-hand text-lg text-rose-700 sm:h-72 sm:w-72 md:h-80 md:w-80">
+                        loading our little box... 🎁
+                      </div>
+                    }
+                  >
+                    <GiftBox3D opened={false} onOpen={() => setUnwrapped(true)} />
+                  </Suspense>
+                ) : (
+                  <div className="flex h-56 w-56 items-center justify-center font-hand text-lg text-rose-700 sm:h-72 sm:w-72 md:h-80 md:w-80">
+                    🎁
+                  </div>
+                )}
                 <motion.div
                   animate={{ y: [0, -6, 0] }}
                   transition={{ duration: 2, repeat: Infinity }}
@@ -251,7 +294,94 @@ export function SceneMemories() {
             </div>
           )}
         </div>
+
+        {unwrapped && (
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.2, duration: 0.8 }}
+            className="mt-16 flex flex-col items-center"
+          >
+            <AnimatePresence mode="wait">
+              {videoStage === "locked" && (
+                <motion.button
+                  key="lock-teaser"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  onClick={() => setVideoStage("pin")}
+                  whileHover={{ scale: 1.04 }}
+                  className="flex flex-col items-center gap-2 rounded-2xl glass-card px-8 py-6 text-center shadow-xl"
+                >
+                  <span className="text-4xl">🔒</span>
+                  <span className="font-hand text-xl text-rose-800">One more surprise is waiting...</span>
+                  <span className="text-sm text-rose-600/70">tap to unlock</span>
+                </motion.button>
+              )}
+
+              {videoStage === "pin" && (
+                <motion.div
+                  key="lock-pin"
+                  initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  className="flex flex-col items-center gap-4 rounded-2xl glass-card px-8 py-6 text-center shadow-xl"
+                >
+                  <div className="flex items-center gap-2 font-hand text-lg text-rose-800">
+                    <span>🔒</span> enter our secret code
+                  </div>
+                  <motion.div
+                    animate={videoError ? { x: [0, -10, 10, -8, 8, 0] } : {}}
+                    transition={{ duration: 0.4 }}
+                    className="flex gap-3"
+                  >
+                    {[0, 1, 2].map((i) => (
+                      <div
+                        key={i}
+                        className={`flex h-11 w-10 items-center justify-center rounded-lg border-2 font-display text-2xl ${
+                          videoError
+                            ? "border-red-400/70 bg-red-500/10 text-red-500"
+                            : "border-rose-300/50 bg-white/40 text-rose-800"
+                        }`}
+                      >
+                        {videoCode[i] ? "●" : ""}
+                      </div>
+                    ))}
+                  </motion.div>
+                  <div className="grid grid-cols-3 gap-2">
+                    {["1", "2", "3", "4", "5", "6", "7", "8", "9", "⌫", "0", "✓"].map((k) => (
+                      <button
+                        key={k}
+                        onClick={() => (k === "✓" ? null : pressVideoCode(k))}
+                        className="h-11 w-11 rounded-full border border-rose-300/40 bg-white/40 font-display text-lg text-rose-800 transition hover:scale-110 hover:bg-rose-200/40 active:scale-95"
+                      >
+                        {k}
+                      </button>
+                    ))}
+                  </div>
+                  <p className="font-hand text-sm text-rose-700/60">hint: what I whisper without saying it 💕</p>
+                </motion.div>
+              )}
+
+              {videoStage === "unlocked" && !videoOpen && (
+                <motion.button
+                  key="lock-replay"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  onClick={() => setVideoOpen(true)}
+                  whileHover={{ scale: 1.04 }}
+                  className="flex flex-col items-center gap-2 rounded-2xl glass-card px-8 py-6 text-center shadow-xl"
+                >
+                  <span className="text-4xl">▶️</span>
+                  <span className="font-hand text-xl text-rose-800">Watch my video message again</span>
+                </motion.button>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        )}
       </div>
+
+      <AnimatePresence>{videoOpen && <SceneVideo onClose={() => setVideoOpen(false)} />}</AnimatePresence>
 
       <AnimatePresence>
         {open && (
@@ -310,6 +440,7 @@ export function SceneMemories() {
                       src={src}
                       controls
                       playsInline
+                      preload="none"
                       className="mx-auto max-h-[60vh] w-full rounded-xl bg-black object-contain shadow-md"
                     />
                   ))}
