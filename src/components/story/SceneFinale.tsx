@@ -214,6 +214,14 @@ export function SceneFinale() {
               }}
             >
               <SunsetBoxSparkle />
+              <motion.p
+                initial={{ opacity: 0, y: -6 }}
+                animate={showFade ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 1.5, delay: 0.5 }}
+                className="absolute inset-x-0 top-3 text-center font-hand text-base text-white/90 drop-shadow-sm sm:text-lg"
+              >
+                See you where destiny meets us again. ✨
+              </motion.p>
               <motion.div
                 initial={{ x: "-10%" }}
                 animate={showFade ? { x: "60%" } : {}}

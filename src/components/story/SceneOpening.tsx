@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { StarField, Particles } from "./Particles";
 
-const SECRET = "143"; // "I love you" in numbers
+const SECRET = "0703";
 type Stage = "closed" | "opening" | "lock" | "unlocked";
 
 // Anchor for the live "It's been..." counter — 428 days before this was set up.
@@ -69,12 +69,12 @@ export function SceneOpening({ onBegin }: { onBegin: () => void }) {
       return;
     }
 
-    if (code.length < 3) setCode((current) => current + n);
+    if (code.length < SECRET.length) setCode((current) => current + n);
   };
 
-  // auto-submit at 3 digits
+  // auto-submit once all digits are entered
   useEffect(() => {
-    if (stage === "lock" && code.length === 3) {
+    if (stage === "lock" && code.length === SECRET.length) {
       const t = setTimeout(() => {
         if (code === SECRET) setStage("unlocked");
         else {
@@ -157,10 +157,10 @@ export function SceneOpening({ onBegin }: { onBegin: () => void }) {
                 transition={{ duration: 0.4 }}
                 className="mb-8 flex gap-4"
               >
-                {[0, 1, 2].map((i) => (
+                {Array.from({ length: SECRET.length }).map((_, i) => (
                   <div
                     key={i}
-                    className={`flex h-14 w-12 items-center justify-center rounded-lg border-2 font-display text-3xl backdrop-blur-md ${
+                    className={`flex h-14 w-10 items-center justify-center rounded-lg border-2 font-display text-3xl backdrop-blur-md sm:w-12 ${
                       error
                         ? "border-red-400/70 bg-red-500/10 text-red-200"
                         : "border-rose-200/40 bg-white/5 text-rose-50"
@@ -184,7 +184,7 @@ export function SceneOpening({ onBegin }: { onBegin: () => void }) {
               </div>
 
               <p className="mt-6 font-hand text-base text-rose-100/50">
-                hint: what I whisper without saying it 💕
+                hint: a date only we'd remember 💕
               </p>
             </motion.div>
           )}

@@ -5,7 +5,7 @@ import { TiltCard } from "./TiltCard";
 import { SceneVideo } from "./SceneVideo";
 
 const GiftBox3D = lazy(() => import("./GiftBox3D").then((m) => ({ default: m.GiftBox3D })));
-const VIDEO_SECRET = "143";
+const VIDEO_SECRET = "07032025";
 
 import couplePhoto1 from "@/assets/couple-photo-1.png";
 import couplePhoto2 from "@/assets/couple-photo-2.png";
@@ -94,16 +94,17 @@ type Box = {
   kind: "photos" | "songs" | "reels" | "gifts" | "jokes" | "calls" | "chats";
   ribbon: string;
   boxColor: string;
+  preview?: string;
 };
 
 const BOXES: Box[] = [
-  { id: "p", icon: "📸", title: "The Pictures That Made Me Blush", kind: "photos", ribbon: "#e5657e", boxColor: "#fff0f3" },
+  { id: "p", icon: "📸", title: "The Pictures That Made Me Blush", kind: "photos", ribbon: "#e5657e", boxColor: "#fff0f3", preview: couplePhoto1 },
   { id: "s", icon: "🎵", title: "Our Dedication Songs", kind: "songs", ribbon: "#7a5fc4", boxColor: "#f3efff" },
   { id: "r", icon: "📱", title: "Reels That Reminded Me Of Us", kind: "reels", ribbon: "#c4507a", boxColor: "#fff0f6" },
-  { id: "g", icon: "🎁", title: "Gifts That Meant More Than Words", kind: "gifts", ribbon: "#d69b3a", boxColor: "#fff8ed" },
+  { id: "g", icon: "🎁", title: "Gifts That Meant More Than Words", kind: "gifts", ribbon: "#d69b3a", boxColor: "#fff8ed", preview: giftHeartRingHand },
   { id: "j", icon: "😂", title: "Jokes Only We Understood", kind: "jokes", ribbon: "#4a9d7f", boxColor: "#f0faf6" },
   { id: "c", icon: "📞", title: "Calls & Meets I Still Treasure", kind: "calls", ribbon: "#c4703a", boxColor: "#fff5ed" },
-  { id: "ch", icon: "💬", title: "Notes I Still Scroll Through", kind: "chats", ribbon: "#a35fc4", boxColor: "#f8f0ff" },
+  { id: "ch", icon: "💬", title: "Notes I Still Scroll Through", kind: "chats", ribbon: "#a35fc4", boxColor: "#f8f0ff", preview: chatNote1 },
 ];
 
 function FloatingBits() {
@@ -166,11 +167,11 @@ export function SceneMemories() {
       setVideoCode((c) => c.slice(0, -1));
       return;
     }
-    if (videoCode.length < 3) setVideoCode((c) => c + n);
+    if (videoCode.length < VIDEO_SECRET.length) setVideoCode((c) => c + n);
   };
 
   useEffect(() => {
-    if (videoStage === "pin" && videoCode.length === 3) {
+    if (videoStage === "pin" && videoCode.length === VIDEO_SECRET.length) {
       const t = setTimeout(() => {
         if (videoCode === VIDEO_SECRET) {
           setVideoStage("unlocked");
@@ -195,11 +196,20 @@ export function SceneMemories() {
       <Particles count={14} kinds={["sparkle", "heart"]} tint="text-rose-500/70" />
 
       <div className="relative z-10 mx-auto max-w-6xl px-6">
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mx-auto flex w-fit items-center gap-2 rounded-full bg-white/50 px-4 py-1.5 shadow-sm backdrop-blur"
+        >
+          <span className="text-sm">🎁</span>
+          <span className="font-hand text-sm tracking-wide text-rose-700">a little treasure chest, just for you</span>
+        </motion.div>
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center font-display text-4xl md:text-6xl text-rose-900"
+          className="mt-3 text-center font-display text-4xl md:text-6xl text-rose-900"
         >
           Beautiful Memories, Wrapped Up
         </motion.h2>
@@ -207,7 +217,7 @@ export function SceneMemories() {
           {unwrapped ? "Tap each memory to open it ♡" : "Tap the ribbon to unwrap our story ♡"}
         </p>
 
-        <div className="relative mt-20 flex min-h-[460px] items-center justify-center">
+        <div className="relative mt-16 flex min-h-[460px] items-center justify-center">
           <AnimatePresence>
             {!unwrapped && (
               <motion.div
@@ -259,28 +269,49 @@ export function SceneMemories() {
                   <TiltCard className="h-full w-full" max={12}>
                     <button
                       onClick={() => setOpen(it)}
-                      className="group relative flex h-full w-full flex-col items-center justify-center rounded-2xl p-4 text-center shadow-xl backdrop-blur-md"
+                      className="group relative flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-2xl text-center shadow-xl"
                       style={{
-                        background: `linear-gradient(135deg, ${it.boxColor}ee 0%, #ffffff88 100%)`,
                         border: `1.5px solid ${it.ribbon}55`,
                         boxShadow: `0 10px 30px ${it.ribbon}33, inset 0 1px 0 #ffffff99`,
                       }}
                     >
-                      <div
-                        className="mb-2 flex h-14 w-14 items-center justify-center rounded-full text-3xl shadow-inner"
-                        style={{
-                          background: `radial-gradient(circle, #fff 0%, ${it.boxColor} 100%)`,
-                          border: `2px solid ${it.ribbon}66`,
-                        }}
-                      >
-                        {it.icon}
+                      {it.preview ? (
+                        <>
+                          <img
+                            src={it.preview}
+                            alt=""
+                            className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-110"
+                          />
+                          <div
+                            className="absolute inset-0"
+                            style={{ background: `linear-gradient(180deg, ${it.ribbon}22 0%, ${it.ribbon}dd 100%)` }}
+                          />
+                        </>
+                      ) : (
+                        <div
+                          className="absolute inset-0 backdrop-blur-md"
+                          style={{ background: `linear-gradient(135deg, ${it.boxColor}ee 0%, #ffffff88 100%)` }}
+                        />
+                      )}
+
+                      <div className="relative flex h-full w-full flex-col items-center justify-center gap-2 p-4">
+                        <div
+                          className="flex h-14 w-14 items-center justify-center rounded-full text-3xl shadow-inner"
+                          style={{
+                            background: it.preview ? "rgba(255,255,255,0.9)" : `radial-gradient(circle, #fff 0%, ${it.boxColor} 100%)`,
+                            border: `2px solid ${it.preview ? "#ffffffcc" : `${it.ribbon}66`}`,
+                          }}
+                        >
+                          {it.icon}
+                        </div>
+                        <p
+                          className="font-hand text-sm leading-tight"
+                          style={{ color: it.preview ? "#fff" : it.ribbon, textShadow: it.preview ? "0 1px 4px rgba(0,0,0,0.35)" : "none" }}
+                        >
+                          {it.title}
+                        </p>
                       </div>
-                      <p
-                        className="font-hand text-sm leading-tight"
-                        style={{ color: it.ribbon }}
-                      >
-                        {it.title}
-                      </p>
+
                       <span
                         className="absolute -top-2 right-2 rounded-full px-2 py-0.5 text-[10px] font-semibold text-white opacity-0 shadow transition-opacity group-hover:opacity-100"
                         style={{ background: it.ribbon }}
@@ -300,8 +331,14 @@ export function SceneMemories() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.2, duration: 0.8 }}
-            className="mt-16 flex flex-col items-center"
+            className="mt-20 flex flex-col items-center"
           >
+            <div className="mb-6 flex w-full max-w-xs items-center gap-3 text-amber-700/50">
+              <span className="h-px flex-1 bg-current" />
+              <span className="text-xs uppercase tracking-[0.2em]">one more secret</span>
+              <span className="h-px flex-1 bg-current" />
+            </div>
+
             <AnimatePresence mode="wait">
               {videoStage === "locked" && (
                 <motion.button
@@ -311,11 +348,18 @@ export function SceneMemories() {
                   exit={{ opacity: 0, scale: 0.9 }}
                   onClick={() => setVideoStage("pin")}
                   whileHover={{ scale: 1.04 }}
-                  className="flex flex-col items-center gap-2 rounded-2xl glass-card px-8 py-6 text-center shadow-xl"
+                  className="relative flex flex-col items-center gap-2 rounded-2xl border-2 border-dashed border-amber-400/60 bg-white/50 px-10 py-7 text-center shadow-xl backdrop-blur-md"
                 >
-                  <span className="text-4xl">🔒</span>
+                  <motion.span
+                    animate={{ scale: [1, 1.12, 1] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="text-4xl"
+                    style={{ filter: "drop-shadow(0 0 10px rgba(212,175,55,0.6))" }}
+                  >
+                    🔒
+                  </motion.span>
                   <span className="font-hand text-xl text-rose-800">One more surprise is waiting...</span>
-                  <span className="text-sm text-rose-600/70">tap to unlock</span>
+                  <span className="text-sm text-amber-700/70">tap to unlock</span>
                 </motion.button>
               )}
 
@@ -325,7 +369,7 @@ export function SceneMemories() {
                   initial={{ opacity: 0, y: 20, scale: 0.9 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
-                  className="flex flex-col items-center gap-4 rounded-2xl glass-card px-8 py-6 text-center shadow-xl"
+                  className="flex flex-col items-center gap-4 rounded-2xl border-2 border-amber-400/50 bg-white/60 px-8 py-6 text-center shadow-xl backdrop-blur-md"
                 >
                   <div className="flex items-center gap-2 font-hand text-lg text-rose-800">
                     <span>🔒</span> enter our secret code
@@ -333,15 +377,15 @@ export function SceneMemories() {
                   <motion.div
                     animate={videoError ? { x: [0, -10, 10, -8, 8, 0] } : {}}
                     transition={{ duration: 0.4 }}
-                    className="flex gap-3"
+                    className="flex flex-wrap justify-center gap-1.5"
                   >
-                    {[0, 1, 2].map((i) => (
+                    {Array.from({ length: VIDEO_SECRET.length }).map((_, i) => (
                       <div
                         key={i}
-                        className={`flex h-11 w-10 items-center justify-center rounded-lg border-2 font-display text-2xl ${
+                        className={`flex h-9 w-6 items-center justify-center rounded-lg border-2 font-display text-base sm:h-10 sm:w-7 sm:text-lg ${
                           videoError
                             ? "border-red-400/70 bg-red-500/10 text-red-500"
-                            : "border-rose-300/50 bg-white/40 text-rose-800"
+                            : "border-amber-400/50 bg-white/60 text-rose-800"
                         }`}
                       >
                         {videoCode[i] ? "●" : ""}
@@ -353,13 +397,13 @@ export function SceneMemories() {
                       <button
                         key={k}
                         onClick={() => (k === "✓" ? null : pressVideoCode(k))}
-                        className="h-11 w-11 rounded-full border border-rose-300/40 bg-white/40 font-display text-lg text-rose-800 transition hover:scale-110 hover:bg-rose-200/40 active:scale-95"
+                        className="h-11 w-11 rounded-full border border-amber-400/40 bg-white/50 font-display text-lg text-rose-800 transition hover:scale-110 hover:bg-amber-100/60 active:scale-95"
                       >
                         {k}
                       </button>
                     ))}
                   </div>
-                  <p className="font-hand text-sm text-rose-700/60">hint: what I whisper without saying it 💕</p>
+                  <p className="font-hand text-sm text-rose-700/60">hint: a date only we'd remember 💕</p>
                 </motion.div>
               )}
 
@@ -370,7 +414,7 @@ export function SceneMemories() {
                   animate={{ opacity: 1, scale: 1 }}
                   onClick={() => setVideoOpen(true)}
                   whileHover={{ scale: 1.04 }}
-                  className="flex flex-col items-center gap-2 rounded-2xl glass-card px-8 py-6 text-center shadow-xl"
+                  className="flex flex-col items-center gap-2 rounded-2xl border-2 border-amber-400/50 bg-white/50 px-8 py-6 text-center shadow-xl backdrop-blur-md"
                 >
                   <span className="text-4xl">▶️</span>
                   <span className="font-hand text-xl text-rose-800">Watch my video message again</span>
