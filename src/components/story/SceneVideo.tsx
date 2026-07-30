@@ -1,29 +1,12 @@
-import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { motion } from "framer-motion";
 import { Fireflies } from "./Particles";
 import { TiltCard } from "./TiltCard";
 
-import videoMessage1 from "@/assets/video-message-1.mp4";
-import videoMessage2 from "@/assets/video-message-2.mp4";
-import videoMessage3 from "@/assets/video-message-3.mp4";
-import videoMessage4 from "@/assets/video-message-4.mp4";
-import videoMessage5 from "@/assets/video-message-5.mp4";
-import videoMessage6 from "@/assets/video-message-6.mp4";
-import videoMessage7 from "@/assets/video-message-7.mp4";
-
-const VIDEOS = [
-  videoMessage1,
-  videoMessage2,
-  videoMessage3,
-  videoMessage4,
-  videoMessage5,
-  videoMessage6,
-  videoMessage7,
-];
+// Hosted on Google Drive — the source file is ~1.1GB, far too large to bundle in the site.
+const DRIVE_FILE_ID = "1HtqJLub_tNFsXjaCeOCoS03L74bF12gP";
+const VIDEO_EMBED_URL = `https://drive.google.com/file/d/${DRIVE_FILE_ID}/preview`;
 
 export function SceneVideo({ onClose }: { onClose: () => void }) {
-  const [index, setIndex] = useState(0);
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -78,49 +61,18 @@ export function SceneVideo({ onClose }: { onClose: () => void }) {
                 boxShadow: "0 30px 60px -20px rgba(0,0,0,0.7), inset 0 0 20px rgba(0,0,0,0.5)",
               }}
             >
-              <div className="relative flex max-h-[60vh] items-center justify-center overflow-hidden rounded-2xl border-4 border-[#2a1710] bg-black">
-                <video
-                  key={index}
-                  src={VIDEOS[index]}
-                  controls
-                  playsInline
-                  preload="metadata"
-                  className="max-h-[60vh] w-full object-contain"
+              <div className="relative aspect-video overflow-hidden rounded-2xl border-4 border-[#2a1710] bg-black">
+                <iframe
+                  src={VIDEO_EMBED_URL}
+                  title="A video message for Nanna"
+                  className="h-full w-full"
+                  allow="autoplay"
+                  allowFullScreen
                 />
               </div>
-              <div className="mt-4 flex items-center justify-between px-2">
-                <button
-                  onClick={() => setIndex((i) => (i - 1 + VIDEOS.length) % VIDEOS.length)}
-                  className="rounded-full bg-white/10 px-4 py-1.5 text-sm text-rose-100 transition hover:bg-white/20"
-                >
-                  ‹ Prev
-                </button>
-                <div className="flex flex-wrap justify-center gap-1.5">
-                  {VIDEOS.map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setIndex(i)}
-                      aria-label={`Clip ${i + 1}`}
-                      className={`h-2 w-2 rounded-full transition ${
-                        i === index ? "bg-rose-300" : "bg-white/30"
-                      }`}
-                    />
-                  ))}
-                </div>
-                <button
-                  onClick={() => setIndex((i) => (i + 1) % VIDEOS.length)}
-                  className="rounded-full bg-white/10 px-4 py-1.5 text-sm text-rose-100 transition hover:bg-white/20"
-                >
-                  Next ›
-                </button>
-              </div>
-              <div className="mt-3 flex items-center justify-between px-2">
-                <div className="flex gap-1">
-                  <span className="h-2 w-2 rounded-full bg-rose-400" />
-                  <span className="h-2 w-2 rounded-full bg-amber-300" />
-                </div>
+              <div className="mt-3 flex items-center justify-center px-2">
                 <span className="text-[10px] uppercase tracking-widest text-amber-200/60">
-                  For Nanna · Clip {index + 1} of {VIDEOS.length}
+                  For Nanna
                 </span>
               </div>
             </div>
